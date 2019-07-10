@@ -39,7 +39,7 @@ CELOTNI_KUPCEK = BARVNE.copy() + POSEBNE_BARVNE.copy() + CRNE.copy()
 ZACETNO_STEVILO_KART = 7
 NAJVECJE_STEVILO_KART = 20
 
-ZMAGA = 'Z'
+ZMAGA = 'ZMAGA!'
 
 
 class Igra:
@@ -55,6 +55,8 @@ class Igra:
         karta = random.choice(self.trenutni_kupcek)
         self.trenutni_kupcek.remove(karta)
         self.igralci[self.trenutni_igralec].append(karta)
+        if len(self.trenutni_kupcek) < 1:
+            self.zmesaj()
 
     def naslednji(self):
         self.naslednji_zacetek()
@@ -69,10 +71,10 @@ class Igra:
             izbira = 0
         while self.igralci[izbira] == []:
             izbira = self.trenutni_igralec + self.smer
-        if izbira < 0:
-            izbira = 3
-        if izbira > 3:
-            izbira = 0
+            if izbira < 0:
+                izbira = 3
+            if izbira > 3:
+                izbira = 0
         return izbira
 
     def naslednji_zacetek(self):
@@ -93,11 +95,15 @@ class Igra:
     def poklic(self, karta):
         if karta == VLECI:
             self.vleci()
+    #        print(self.igralci)
+    #        print(self.zgorne_karte)
             return
         self.zgorne_karte.append(karta)
         if len(self.zgorne_karte) > 5:
             self.zgorne_karte.pop(0)
         self.igralci[self.trenutni_igralec].remove(karta)
+     #   print(self.igralci)
+     #   print(self.zgorne_karte)
 
     def priprava_za_igro(self):
         self.trenutni_kupcek = CELOTNI_KUPCEK.copy()
@@ -125,6 +131,106 @@ class Igra:
                 mozni.append(i)
         return mozni
 
+
+    def sprememba_barve(self, barva):
+        self.zgorne_karte.append((barva, barva))
+        if len(self.zgorne_karte) > 5:
+            self.zgorne_karte.pop(0)
+
+    def stop(self):
+        self.trenutni_igralec += self.smer
+
+    def zamenjaj_smer(self):
+        self.smer *= -1
+    
+    def plus2(self):
+        zgorna = self.zgorne_karte[-2]
+        self.trenutni_igralec += self.smer
+        self.vleci()
+        self.vleci()
+        self.trenutni_igralec -= smer
+        self.zgorne_karte.append((zgorna[1], zgorna[1]))
+        if len(self.zgorne_karte) > 5:
+            self.zgorne_karte.pop(0)
+
+
+    def verjetnost_vleci(self):
+        verjetnost = 0.02
+        mozni = self.mozne_izbire()
+        nasled = self.naslednji_bi()
+        poseben = []
+        for i in mozni:
+            if i[0] == ZAMENJAJ_STRAN or i[0] == STOP:
+                poseben.append(i)
+        crne = []
+        for i in mozni:
+            if i[1] == CRNA:
+                crne.append(i)
+        if len(self.igralci[nasled]) == 1:
+            if crne == [] and poseben == []:
+                verjetnost += 1
+        return verjetnost
+
+
+    def verjetnost_posebni(self):
+        mozni = self.mozne_izbire()
+        nasled = self.naslednji_bi()
+        poseben = []
+        for i in mozni:
+            if i[0] == ZAMENJAJ_STRAN or i[0] == STOP:
+                poseben.append(i)
+        verjetnost = 0
+        if poseben != []:
+            verjetnost += 0.1
+            if len(self.igralci[nasled]) <= 3:
+                    verjetnost += 0.1
+            if len(self.igralci[self.trenutni_igralec]) <= 3:
+                verjetnost += 0.1
+        return verjetnost
+
+    def verjetnost_pet(self):
+        mozni = self.mozne_izbire()
+        nasled = self.naslednji_bi()
+        verjetnost = 0
+        if (VLECI_PET, CRNA) in mozni:
+            verjetnost += 0.02
+            stevilo_kart = 0
+            for i in range(4):
+                if i == self.trenutni_igralec:
+                    pass
+                else:
+                    for j in self.igralci[i]:
+                        stevilo_kart += 1
+            if stevilo_kart <= 8:
+                verjetnost += 0.4
+            if len(self.igralci[nasled]) <= 3:
+                verjetnost += 0.1
+            if len(self.igralci[self.trenutni_igralec]) <= 3:
+                    verjetnost /= 2
+        return verjetnost
+
+    def verjetnost_crne(self):
+        mozni = self.mozne_izbire()
+        nasled = self.naslednji_bi()
+        verjetnost = 0
+        crne = []
+        for i in mozni:
+            if i[1] == CRNA:
+                crne.append(i)
+        if crne != []:
+            verjetnost += 0.1
+            if len(self.igralci[nasled]) <= 4:
+                    verjetnost += 0.05
+            if len(self.igralci[nasled]) <= 3:
+                    verjetnost += 0.05
+            if len(self.igralci[nasled]) <= 1:
+                    verjetnost += 0.1
+            if len(self.igralci[self.trenutni_igralec]) <= 3:
+                verjetnost /= 2 
+        return verjetnost
+
+
+
     def nasprotnik(self):
         mozni = self.mozne_izbire()
         if mozni == []:
@@ -140,55 +246,37 @@ class Igra:
             if i[1] == CRNA:
                 crne.append(i)
                 mozni.remove(i)
-        verjetnost_za_pet = 0
         if (VLECI_PET, CRNA) in crne:
-            grom = (VLECI_PET, CRNA)
             crne.remove((VLECI_PET, CRNA))
-            verjetnost_za_pet += 0.02
-            stevilo_kart = 0
-            for i in range(4):
-                if i == self.trenutni_igralec:
-                    pass
-                else:
-                    for j in self.igralci[i]:
-                        stevilo_kart += 1
-            if stevilo_kart <= 8:
-                verjetnost_za_pet = 0.4
-            if len(self.igralci[nasled]) <= 3:
-                verjetnost_za_pet += 0.1
-            if len(self.igralci[self.trenutni_igralec]) <= 3:
-                verjetnost_za_pet /= 2
-        verjetnost_za_crne = verjetnost_za_pet
-        if crne != []:
-            verjetnost_za_crne += 0.1
-            if len(self.igralci[nasled]) <= 4:
-                    verjetnost_za_crne += 0.1
-            if len(self.igralci[nasled]) <= 3:
-                    verjetnost_za_crne += 0.1
-            if len(self.igralci[nasled]) <= 1:
-                    verjetnost_za_crne += 0.1
-            if len(self.igralci[self.trenutni_igralec]) <= 3:
-                verjetnost_za_crne = (verjetnost_za_crne + verjetnost_za_pet) / 2   
-        verjetnost_za_posebne = verjetnost_za_crne
-        if poseben != []:
-            verjetnost_za_posebne += 0.2
-            if len(self.igralci[nasled]) <= 3:
-                    verjetnost_za_posebne += 0.1
+     ######################################
+        verjet_vleci = self.verjetnost_vleci()
+        verjet_pet = self.verjetnost_pet() + verjet_vleci
+        verjet_crne = verjet_pet + self.verjetnost_crne()
+        verjet_pos = verjet_crne + self.verjetnost_posebni()
+
         inteligenca = random.random()
-        if inteligenca < verjetnost_za_pet:
+        if inteligenca < verjet_vleci:
+            return 'VLECI'
+        if inteligenca < verjet_pet:
             return (VLECI_PET, CRNA)
-        if inteligenca < verjetnost_za_crne:
+        if inteligenca < verjet_crne:
             return random.choice(crne)
-        if inteligenca < verjetnost_za_posebne:
+        if inteligenca < verjet_pos:
             return random.choice(poseben)
         for i in mozni:
             n = mozni.count(i)
             if n > 1:
                 return i
+        if mozni != []:
+            return random.choice(mozni)
+        mozni = self.mozne_izbire()
         return random.choice(mozni)
 
 
-
+    def dvakrat(self):
+        gledamo = self.zgorne_karte[-1]
+        return gledamo in self.igralci[self.trenutni_igralec]
+        
 
 
 
