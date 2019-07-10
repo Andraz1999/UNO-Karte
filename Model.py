@@ -279,6 +279,8 @@ class Igra:
         
 
 
+    
+
 
 
 
