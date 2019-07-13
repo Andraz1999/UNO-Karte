@@ -5,8 +5,8 @@ RUMENA = 'ru'
 MODRA = 'mo'
 ZELENA = 'ze'
 CRNA = 'cr'
-ZAMENJAJ_STRAN = '⟳'
-STOP = 'stop'
+ZAMENJAJ_STRAN = ' ⟳'
+STOP = 'st'
 SPREMENI_BARVO = 'sp'
 VLECI_DVE = '+2'
 VLECI_STIRI = '+4'
@@ -16,7 +16,8 @@ VLECI = 'vleci'
 
 BARVNE = []
 for _ in range(2):
-    for stevilo in range(10):
+    for i in range(10):
+        stevilo = ' ' + str(i)
         for barva in [RDECA, RUMENA, MODRA, ZELENA]:
             BARVNE.append((stevilo, barva))
 
@@ -38,6 +39,7 @@ CELOTNI_KUPCEK = BARVNE.copy() + POSEBNE_BARVNE.copy() + CRNE.copy()
 
 ZACETNO_STEVILO_KART = 7
 NAJVECJE_STEVILO_KART = 20
+IZPADEL = 'IZPADEL'
 
 ZMAGA = 'ZMAGA!'
 
@@ -60,7 +62,7 @@ class Igra:
 
     def naslednji(self):
         self.naslednji_zacetek()
-        while self.igralci[self.trenutni_igralec] == []:
+        while self.igralci[self.trenutni_igralec] == [] or self.igralci[self.trenutni_igralec] == IZPADEL:
             self.naslednji_zacetek()
 
     def naslednji_bi(self):
@@ -69,7 +71,7 @@ class Igra:
             izbira = 3
         if izbira > 3:
             izbira = 0
-        while self.igralci[izbira] == []:
+        while self.igralci[izbira] == [] or self.igralci[izbira] == IZPADEL:
             izbira = self.trenutni_igralec + self.smer
             if izbira < 0:
                 izbira = 3
@@ -86,6 +88,11 @@ class Igra:
 
     def zmesaj(self):
         self.trenutni_kupcek = CELOTNI_KUPCEK.copy()
+
+    def izpadel(self):
+        for i in range(4):
+            if len(self.igralci[i]) > NAJVECJE_STEVILO_KART:
+                self.igralci[i] = IZPADEL
 
     def zacetna(self):
         karta = random.choice(BARVNE)
@@ -114,9 +121,11 @@ class Igra:
         self.trenutni_igralec = 0
 
     def konec_igre(self):
+        if self.igralci[0] == IZPADEL:
+            return True
         igralci = 0
         for i in self.igralci:
-            if i != []:
+            if i == []:
                 igralci += 1
         return igralci == 1
 
@@ -131,6 +140,19 @@ class Igra:
                 mozni.append(i)
         return mozni
 
+    def vleci_pet(self, barva):
+        grom = self.trenutni_igralec 
+        self.naslednji()
+        while grom != self.trenutni_igralec:
+            self.vleci()
+            self.vleci()
+            self.vleci()
+            self.vleci()
+            self.vleci()
+            self.naslednji()
+        self.zgorne_karte.append((barva, barva))
+        if len(self.zgorne_karte) > 5:
+            self.zgorne_karte.pop(0)
 
     def sprememba_barve(self, barva):
         self.zgorne_karte.append((barva, barva))
@@ -143,15 +165,13 @@ class Igra:
     def zamenjaj_smer(self):
         self.smer *= -1
     
-    def plus2(self):
-        zgorna = self.zgorne_karte[-2]
-        self.trenutni_igralec += self.smer
-        self.vleci()
-        self.vleci()
-        self.trenutni_igralec -= smer
-        self.zgorne_karte.append((zgorna[1], zgorna[1]))
-        if len(self.zgorne_karte) > 5:
-            self.zgorne_karte.pop(0)
+    def plus2(self, sez):
+        for _ in range(2):
+            karta = random.choice(self.trenutni_kupcek)
+            self.trenutni_kupcek.remove(karta)
+            if len(self.trenutni_kupcek) < 1:
+                self.zmesaj()
+            sez.append(karta)
 
 
     def verjetnost_vleci(self):
@@ -277,11 +297,25 @@ class Igra:
         gledamo = self.zgorne_karte[-1]
         return gledamo in self.igralci[self.trenutni_igralec]
         
+    def nasprotnik_barva(self):
+        seznam = []
+        for karta in self.igralci[self.trenutni_igralec]:
+            if karta in BARVNE or karta in POSEBNE_BARVNE:
+                seznam.append(karta)
+        if seznam == []:
+            return random.choice[RDECA, RUMENA, MODRA, ZELENA]
+        izbira = random.choice(seznam)
+        return izbira[1]
 
 
     
-
-
+#
+#a = Igra()
+#a.priprava_za_igro()
+#while len(a.igralci[a.trenutni_igralec]) < 21:
+#    a.vleci()
+#a.izpadel()
+#print(len(a.igralci[a.trenutni_igralec]))
 
 
 
