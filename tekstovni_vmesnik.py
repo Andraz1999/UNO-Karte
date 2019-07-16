@@ -5,7 +5,7 @@ import Model
 zgorna = (
     '|==============================================================================================================|\n'
     '|                                       ______                Trenutni:   {ena} |                        |\n'
-    '|                                      |      |               Naslednji:  {dva} |                        |\n'
+    '|                                      |      |               Naslednji:  {dva} |   LEGENDA:             |\n'
     '|                       Nasprotnik2    |  {aa}  |   {aaa}                                 |   RDECA = rd           |\n' 
     '|                                      |      |                                       |   RUMENA = ru          |\n'
     '|                                      |______|                                       |   MODRA = mo           |\n'
