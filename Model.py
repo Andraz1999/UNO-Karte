@@ -12,7 +12,7 @@ VLECI_DVE = '+2'
 VLECI_STIRI = '+4'
 VLECI_PET = '+5'
 
-VLECI = 'vleci'
+VLECI = 'VLECI'
 
 BARVNE = []
 for _ in range(2):
@@ -102,15 +102,12 @@ class Igra:
     def poklic(self, karta):
         if karta == VLECI:
             self.vleci()
-    #        print(self.igralci)
-    #        print(self.zgorne_karte)
             return
         self.zgorne_karte.append(karta)
         if len(self.zgorne_karte) > 5:
             self.zgorne_karte.pop(0)
         self.igralci[self.trenutni_igralec].remove(karta)
-     #   print(self.igralci)
-     #   print(self.zgorne_karte)
+
 
     def priprava_za_igro(self):
         self.trenutni_kupcek = CELOTNI_KUPCEK.copy()
@@ -159,8 +156,7 @@ class Igra:
         if len(self.zgorne_karte) > 5:
             self.zgorne_karte.pop(0)
 
-    def stop(self):
-        self.trenutni_igralec += self.smer
+    
 
     def zamenjaj_smer(self):
         self.smer *= -1
@@ -276,12 +272,12 @@ class Igra:
 
         inteligenca = random.random()
         if inteligenca < verjet_vleci:
-            return 'VLECI'
-        if inteligenca < verjet_pet:
+            return VLECI
+        elif inteligenca < verjet_pet:
             return (VLECI_PET, CRNA)
-        if inteligenca < verjet_crne:
+        elif inteligenca < verjet_crne:
             return random.choice(crne)
-        if inteligenca < verjet_pos:
+        elif inteligenca < verjet_pos:
             return random.choice(poseben)
         for i in mozni:
             n = mozni.count(i)

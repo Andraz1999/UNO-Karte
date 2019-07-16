@@ -403,10 +403,22 @@ def prikaz_igralca20(stevilo0, barva0, stevilo1, barva1, stevilo2, barva2, stevi
      )
     print(prikaz1.format(aa = stevilo0, bb = barva0, cc = stevilo1, dd = barva1, ee = stevilo2, ff = barva2, gg = stevilo3, hh = barva3, ii = stevilo4, jj = barva4, kk = stevilo5, ll = barva5, mm = stevilo6, nn = barva6, oo = stevilo7, pp = barva7, rr = stevilo8, ss = barva8, tt = stevilo9, uu = barva9, vv = stevilo10, zz = barva10, ab = stevilo11, ba = barva11, bc = stevilo12, cb = barva12, cd = stevilo13, dc = barva13, de = stevilo14, ed = barva14, ef = stevilo15, fe = barva15, fg = stevilo16, gf = barva16, gh = stevilo17, hg = barva17, hi = stevilo18, ih = barva18, ij = stevilo19, ji = barva19)) 
 
+def prikaz_igralca0():
+    prikaz = (
+        '|==============================================================================================================|\n'
+        '|  Igralec           ____                       ______                         _____                           |\n'
+        '|                       /  |\    /|     /\     |      |    /\     |           |        |       |               |\n'
+        '|                      /   | \  / |    /  \    |          /  \    |           |_____   |       |               |\n'
+        '|                     /    |  \/  |   /----\   |   ____  /----\   |                 |  |       |               |\n'
+        '|                    /     |      |  /      \  |      | /      \  |                 |  |       |               |\n'
+        '|                   /____  |      | /        \ |______|/        \ |_____      ______|  |       O               |\n'
+        '|==============================================================================================================|\n'
+    )
+    return print(prikaz)
 
 def izberi_barvo():
     while True:
-        vnos = input('Izberi barvo: ({}, {}, {}, {}): '.format(Model.RDECA, Model.RUMENA, Model.MODRA, Model.ZELENA))
+        vnos = input('Izberi barvo: ("{}", "{}", "{}", "{}"): '.format(Model.RDECA, Model.RUMENA, Model.MODRA, Model.ZELENA))
         if vnos in [Model.RDECA, Model.RUMENA, Model.MODRA, Model.ZELENA]:
             return vnos
         print('Neveljavna izbira!')
@@ -465,6 +477,8 @@ def main():
         print(zgorna.format(aa = n2, bb = n1, ee = n3, aaa = un2, bbb = un1, ccc = un3, cc = igra.zgorne_karte[-1][0], dd = igra.zgorne_karte[-1][1], ena = p1, dva = p2))
 #################################################
         ig = igra.igralci[0]
+        if len(ig) == 0:
+            return prikaz_igralca0()
         if len(ig) == 1:
             prikaz_igralca1(ig[0][0], ig[0][1])
         elif len(ig) == 2:
@@ -520,375 +534,179 @@ def main():
                         return igra.igralci[0][vnos - 1]
             print('Neveljavna poteza!')
     ################################################################3
+    def vleci_kazen(n, karta, zgorna_karta):
+        vnos = (karta, Model.CRNA)
+        kazen = []
+        for _ in range(n):
+            karta = random.choice(igra.trenutni_kupcek)
+            igra.trenutni_kupcek.remove(karta)
+            kazen.append(karta)
+            if len(igra.trenutni_kupcek) < 1:
+                igra.zmesaj()
+        igra.naslednji()
+        kljuc = True
+        while vnos in igra.igralci[igra.trenutni_igralec] and kljuc:
+            if igra.trenutni_igralec == 0:
+                if da_ali_ne(f'Ali želiš karto {vnos} zdaj poklicati? ("DA" ali "NE"): '):
+                    igra.poklic(vnos)
+                    for _ in range(n):
+                        karta = random.choice(igra.trenutni_kupcek)
+                        igra.trenutni_kupcek.remove(karta)
+                        kazen.append(karta)
+                        if len(igra.trenutni_kupcek) < 1:
+                            igra.zmesaj()
+                    igra.naslednji()
+                else:
+                    igra.igralci[0] += kazen
+                    x = len(kazen)
+                    if x == 2:
+                        print('Vlekel si 2 karti!')
+                    elif x == 3 or x == 4:
+                        print(f'Vlekel si {x} karte!')
+                    else:
+                        print(f'Vlekel si {x} kart!')
+                    kljuc = False
+            else:
+                verjetnost = random.random()
+                if verjetnost <= 0.8:
+                    igra.poklic(vnos)
+                    for _ in range(n):
+                        karta = random.choice(igra.trenutni_kupcek)
+                        igra.trenutni_kupcek.remove(karta)
+                        kazen.append(karta)
+                        if len(igra.trenutni_kupcek) < 1:
+                            igra.zmesaj()
+                    igra.naslednji()
+                else: 
+                    igra.igralci[igra.trenutni_igralec] += kazen
+                    x = len(kazen)
+                    y = igra.trenutni_igralec
+                    if x == 2:
+                        print(f'Nasprotnik{y} je vlekel 2 karti!')
+                    elif x == 3:
+                        print(f'Nasprotnik{y} je vlekel 3 karte!')
+                    else:
+                        print(f'Nasprotnik{y} je vlekel {x} kart!')
+                    kljuc = False
+        if kljuc:
+            if igra.trenutni_igralec == 0:
+                igra.igralci[0] += kazen
+                x = len(kazen)
+                if x == 2:
+                    print('Vlekel si 2 karti!')
+                elif x == 3:
+                    print('Vlekel si 3 karte!')
+                else:
+                    print(f'Vlekel si {x} kart!')
+            else:  
+                igra.igralci[igra.trenutni_igralec] += kazen
+                x = len(kazen)
+                y = igra.trenutni_igralec
+                if x == 2:
+                    print(f'Nasprotnik{y} je vlekel 2 karti!')
+                elif x == 3:
+                    print(f'Nasprotnik{y} je vlekel 3 karte!')
+                else:
+                    print(f'Nasprotnik{y} je vlekel {x} kart!') 
+        igra.zgorne_karte.append((zgorna_karta, zgorna_karta))
+        if len(igra.zgorne_karte) > 5:
+            igra.zgorne_karte.pop(0)
+    ##############################################33
+    def krog_igralec(vnos, pogoj):
+        zgorna_karta = igra.zgorne_karte[-1]
+        igra.poklic(vnos)
+        osnova()
+        if vnos == Model.VLECI:
+            print('Vlekel si novo karto.')
+        else:
+            print(f'Poklical si karto: {vnos}.')
+        if vnos[0] == Model.ZAMENJAJ_STRAN:
+            igra.zamenjaj_smer()
+            print('Spremenila se je smer.')
+        elif vnos[0] == Model.STOP:
+            p1 = igra.naslednji_bi()
+            if p1 == 0:
+                print('Preskočili so te.')
+            else:
+                p1 = 'Nasprotnika{}'.format(p1)
+                print(f'{p1} ste preskočili.')
+            igra.naslednji()
+        elif vnos[0] == Model.SPREMENI_BARVO:
+            vnos2 = izberi_barvo()
+            igra.sprememba_barve(vnos2)
+            print(f'Barva se je spremenila na: {vnos2}.')
+        elif vnos[0] == Model.VLECI_PET:
+            igra.vleci_pet(zgorna_karta[1])
+            print('Vsak je vlekel 5 kart!!!')
+        elif vnos == Model.VLECI:
+            nova = igra.igralci[0][-1]
+            if nova in igra.mozne_izbire():
+                if da_ali_ne('Ali želiš to karto zdaj poklicati? ("DA" ali "NE"): '):
+                    krog_igralec(nova, False)
+        elif vnos[0] == Model.VLECI_DVE:
+            vleci_kazen(2, Model.VLECI_DVE, zgorna_karta[1])        
+        elif vnos[0] == Model.VLECI_STIRI:
+            vleci_kazen(4, Model.VLECI_STIRI, zgorna_karta[1])  
+        elif vnos in Model.BARVNE and pogoj:
+            if vnos in igra.igralci[0]:
+                if da_ali_ne(f'Ali želiš še eno {vnos} poklicat? ("DA" ali "NE"): '):
+                    igra.poklic(vnos)
+                    print(f'Poklical si dve {vnos}.')              
+                    ######################################################################
+    def krog_nasprotnik(vnos, pogoj):
+        zgorna_karta = igra.zgorne_karte[-1]
+        z = igra.trenutni_igralec
+        igra.poklic(vnos)
+        osnova()
+        if vnos == Model.VLECI:
+            print(f'Nasprotnik{z} je vlekel novo karto.')
+        else:
+            print(f'Nasprotnik{z} je poklical karto: {vnos}.')
+        enter()
+        if vnos[0] == Model.ZAMENJAJ_STRAN:
+            igra.zamenjaj_smer()
+            print('Spremenila se je smer.')
+        elif vnos[0] == Model.STOP:
+            p1 = igra.naslednji_bi()
+            if p1 == 0:
+                print('Preskočili so te.')
+            else:
+                p1 = 'Nasprotnika{}'.format(p1)
+                print(f'{p1} ste preskočili.')
+            igra.naslednji()
+        elif vnos[0] == Model.SPREMENI_BARVO:
+            vnos2 = igra.nasprotnik_barva()
+            igra.sprememba_barve(vnos2)
+            print(f'Barva se je spremenila na: {vnos2}.')
+        elif vnos[0] == Model.VLECI_PET:
+            igra.vleci_pet(zgorna_karta[1])
+            print('Vsak je vlekel 5 kart!!!')
+        elif vnos == Model.VLECI:
+            nova = igra.igralci[igra.trenutni_igralec][-1]
+            if nova in igra.mozne_izbire():
+                if random.random() < 0.8:
+                    krog_nasprotnik(nova, False)
+        elif vnos[0] == Model.VLECI_DVE:
+            vleci_kazen(2, Model.VLECI_DVE, zgorna_karta[1])
+        elif vnos[0] == Model.VLECI_STIRI:
+            vleci_kazen(4, Model.VLECI_STIRI, zgorna_karta[1])  
+        elif vnos in Model.BARVNE and pogoj:
+            if vnos in igra.igralci[igra.trenutni_igralec]:
+                    igra.poklic(vnos)
+                    print(f'Nasprotnik{z} je poklical dve {vnos}.') 
+            
     
-    #osnova()
     while True:
         osnova()
-        zgorna_karta = igra.zgorne_karte[-1]
+        #zgorna_karta = igra.zgorne_karte[-1]
         if igra.trenutni_igralec == 0:
             vnos = poteza()
-            igra.poklic(vnos)
-            osnova()
-            if vnos == Model.VLECI:
-                print('Vlekel si novo karto')
-            else:
-                print(f'Poklical si karto: {vnos}')
-            enter()
-            if vnos[0] == Model.ZAMENJAJ_STRAN:
-                igra.zamenjaj_smer()
-            elif vnos[0] == Model.STOP:
-                igra.stop()
-            elif vnos[0] == Model.SPREMENI_BARVO:
-                vnos2 = izberi_barvo()
-                igra.sprememba_barve(vnos2)
-            elif vnos[0] == Model.VLECI_PET:
-                igra.vleci_pet(zgorna_karta[1])
-            elif vnos == Model.VLECI:
-                nova = igra.igralci[0][-1]
-                if nova in igra.mozne_izbire():
-                    if da_ali_ne('Ali želiš to karto zdaj poklicati? ("DA" ali "NE"): '):
-                        igra.zgorne_karte.append(nova)
-                        if len(igra.zgorne_karte) > 5:
-                            igra.zgorne_karte.pop(0)
-                        igra.igralci[0].remove(nova)
-            elif vnos[0] == Model.VLECI_DVE:
-                kazen = []
-                for _ in range(2):
-                    karta = random.choice(igra.trenutni_kupcek)
-                    igra.trenutni_kupcek.remove(karta)
-                    kazen.append(karta)
-                    if len(igra.trenutni_kupcek) < 1:
-                        igra.zmesaj()
-                igra.naslednji()
-                kljuc = True
-                while vnos in igra.igralci[igra.trenutni_igralec] and kljuc:
-                    if igra.trenutni_igralec == 0:
-                        if da_ali_ne(f'Ali želiš karto {vnos} zdaj poklicati? ("DA" ali "NE"): '):
-                            igra.poklic(vnos)
-                            for _ in range(2):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else:
-                            igra.igralci[0] += kazen
-                            x = len(kazen)
-                            if x == 2:
-                                print('Vlekel si 2 karti!')
-                            elif x == 3:
-                                print('Vlekel si 3 karte!')
-                            else:
-                                print(f'Vlekel si {x} kart!')
-                            kljuc = False
-                    else:
-                        verjetnost = random.random()
-                        if verjetnost <= 0.75:
-                            igra.poklic(vnos)
-                            for _ in range(2):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else: 
-                            igra.igralci[igra.trenutni_igralec] += kazen
-                            x = len(kazen)
-                            y = igra.trenutni_igralec
-                            if x == 2:
-                                print(f'Nasprotnik{y} je vlekel 2 karti!')
-                            elif x == 3:
-                                print(f'Nasprotnik{y} je vlekel 3 karte!')
-                            else:
-                                print(f'Nasprotnik{y} je vlekel {x} kart!')
-                            kljuc = False
-                if kljuc:
-                    if igra.trenutni_igralec == 0:
-                        igra.igralci[0] += kazen
-                        x = len(kazen)
-                        if x == 2:
-                            print('Vlekel si 2 karti!')
-                        elif x == 3:
-                            print('Vlekel si 3 karte!')
-                        else:
-                            print(f'Vlekel si {x} kart!')
-                    else:  
-                        igra.igralci[igra.trenutni_igralec] += kazen
-                        x = len(kazen)
-                        y = igra.trenutni_igralec
-                        if x == 2:
-                            print(f'Nasprotnik{y} je vlekel 2 karti!')
-                        elif x == 3:
-                            print(f'Nasprotnik{y} je vlekel 3 karte!')
-                        else:
-                            print(f'Nasprotnik{y} je vlekel {x} kart!') 
-                igra.zgorne_karte.append((zgorna_karta[1], zgorna_karta[1]))
-                if len(igra.zgorne_karte) > 5:
-                    igra.zgorne_karte.pop(0)            
-            ###############
-            elif vnos[0] == Model.VLECI_STIRI:
-                kazen = []
-                for _ in range(4):
-                    karta = random.choice(igra.trenutni_kupcek)
-                    igra.trenutni_kupcek.remove(karta)
-                    kazen.append(karta)
-                    if len(igra.trenutni_kupcek) < 1:
-                        igra.zmesaj()
-                igra.naslednji()
-                kljuc = True
-                while vnos in igra.igralci[igra.trenutni_igralec] and kljuc:
-                    if igra.trenutni_igralec == 0:
-                        if da_ali_ne(f'Ali želiš karto {vnos} zdaj poklicati? ("DA" ali "NE"): '):
-                            igra.poklic(vnos)
-                            for _ in range(4):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else:
-                            igra.igralci[0] += kazen
-                            x = len(kazen)
-                            if x == 2:
-                                print('Vlekel si 2 karti!')
-                            elif x == 3:
-                                print('Vlekel si 3 karte!')
-                            else:
-                                print(f'Vlekel si {x} kart!')
-                            kljuc = False
-                    else:
-                        verjetnost = random.random()
-                        if verjetnost <= 0.75:
-                            igra.poklic(vnos)
-                            for _ in range(4):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else: 
-                            igra.igralci[igra.trenutni_igralec] += kazen
-                            x = len(kazen)
-                            y = igra.trenutni_igralec
-                            if x == 2:
-                                print(f'Nasprotnik{y} je vlekel 2 karti!')
-                            elif x == 3:
-                                print(f'Nasprotnik{y} je vlekel 3 karte!')
-                            else:
-                                print(f'Nasprotnik{y} je vlekel {x} kart!')
-                            kljuc = False
-                if kljuc:
-                    if igra.trenutni_igralec == 0:
-                        igra.igralci[0] += kazen
-                        x = len(kazen)
-                        if x == 2:
-                            print('Vlekel si 2 karti!')
-                        elif x == 3:
-                            print('Vlekel si 3 karte!')
-                        else:
-                            print(f'Vlekel si {x} kart!')
-                    else:  
-                        igra.igralci[igra.trenutni_igralec] += kazen
-                        x = len(kazen)
-                        y = igra.trenutni_igralec
-                        if x == 2:
-                            print(f'Nasprotnik{y} je vlekel 2 karti!')
-                        elif x == 3:
-                            print(f'Nasprotnik{y} je vlekel 3 karte!')
-                        else:
-                            print(f'Nasprotnik{y} je vlekel {x} kart!')   
-                igra.zgorne_karte.append((zgorna_karta[1], zgorna_karta[1]))
-                if len(igra.zgorne_karte) > 5:
-                    igra.zgorne_karte.pop(0)                  
-                        ######################################################################
-            #enter()
-            igra.naslednji()
+            krog_igralec(vnos, True)
+        
         else:
-            z = igra.trenutni_igralec
             vnos = igra.nasprotnik()
-            igra.poklic(vnos)
-            osnova()
-            if vnos == Model.VLECI:
-                print(f'Nasprotnik{z} je vlekel novo karto')
-            else:
-                print(f'Nasprotnik{z} je poklical karto: {vnos}')
-            enter()
-            if vnos[0] == Model.ZAMENJAJ_STRAN:
-                igra.zamenjaj_smer()
-            elif vnos[0] == Model.STOP:
-                igra.stop()
-            elif vnos[0] == Model.SPREMENI_BARVO:
-                vnos2 = igra.nasprotnik_barva()
-                igra.sprememba_barve(vnos2)
-            elif vnos[0] == Model.VLECI_PET:
-                igra.vleci_pet(zgorna_karta[1])
-            elif vnos == Model.VLECI:
-                nova = igra.igralci[igra.trenutni_igralec][-1]
-                if nova in igra.mozne_izbire():
-                    if random.random() < 0.8:
-                        igra.zgorne_karte.append(nova)
-                        if len(igra.zgorne_karte) > 5:
-                            igra.zgorne_karte.pop(0)
-                        igra.igralci[igra.trenutni_igralec].remove(nova)
-            elif vnos[0] == Model.VLECI_DVE:
-                kazen = []
-                for _ in range(2):
-                    karta = random.choice(igra.trenutni_kupcek)
-                    igra.trenutni_kupcek.remove(karta)
-                    kazen.append(karta)
-                    if len(igra.trenutni_kupcek) < 1:
-                        igra.zmesaj()
-                igra.naslednji()
-                kljuc = True
-                while vnos in igra.igralci[igra.trenutni_igralec] and kljuc:
-                    if igra.trenutni_igralec == 0:
-                        if da_ali_ne(f'Ali želiš karto {vnos} zdaj poklicati? ("DA" ali "NE"): '):
-                            igra.poklic(vnos)
-                            for _ in range(2):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else:
-                            igra.igralci[0] += kazen
-                            x = len(kazen)
-                            if x == 2:
-                                print('Vlekel si 2 karti!')
-                            elif x == 3:
-                                print('Vlekel si 3 karte!')
-                            else:
-                                print(f'Vlekel si {x} kart!')
-                            kljuc = False
-                    else:
-                        verjetnost = random.random()
-                        if verjetnost <= 0.75:
-                            igra.poklic(vnos)
-                            for _ in range(2):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else: 
-                            igra.igralci[igra.trenutni_igralec] += kazen
-                            x = len(kazen)
-                            y = igra.trenutni_igralec
-                            if x == 2:
-                                print(f'Nasprotnik{y} je vlekel 2 karti!')
-                            elif x == 3:
-                                print(f'Nasprotnik{y} je vlekel 3 karte!')
-                            else:
-                                print(f'Nasprotnik{y} je vlekel {x} kart!')
-                            kljuc = False
-                if kljuc:
-                    if igra.trenutni_igralec == 0:
-                        igra.igralci[0] += kazen
-                        x = len(kazen)
-                        if x == 2:
-                            print('Vlekel si 2 karti!')
-                        elif x == 3:
-                            print('Vlekel si 3 karte!')
-                        else:
-                            print(f'Vlekel si {x} kart!')
-                    else:  
-                        igra.igralci[igra.trenutni_igralec] += kazen
-                        x = len(kazen)
-                        y = igra.trenutni_igralec
-                        if x == 2:
-                            print(f'Nasprotnik{y} je vlekel 2 karti!')
-                        elif x == 3:
-                            print(f'Nasprotnik{y} je vlekel 3 karte!')
-                        else:
-                            print(f'Nasprotnik{y} je vlekel {x} kart!') 
-                igra.zgorne_karte.append((zgorna_karta[1], zgorna_karta[1]))
-                if len(igra.zgorne_karte) > 5:
-                    igra.zgorne_karte.pop(0)            
-            ###############
-            elif vnos[0] == Model.VLECI_STIRI:
-                kazen = []
-                for _ in range(4):
-                    karta = random.choice(igra.trenutni_kupcek)
-                    igra.trenutni_kupcek.remove(karta)
-                    kazen.append(karta)
-                    if len(igra.trenutni_kupcek) < 1:
-                        igra.zmesaj()
-                igra.naslednji()
-                kljuc = True
-                while vnos in igra.igralci[igra.trenutni_igralec] and kljuc:
-                    if igra.trenutni_igralec == 0:
-                        if da_ali_ne(f'Ali želiš karto {vnos} zdaj poklicati? ("DA" ali "NE"): '):
-                            igra.poklic(vnos)
-                            for _ in range(4):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else:
-                            igra.igralci[0] += kazen
-                            x = len(kazen)
-                            if x == 2:
-                                print('Vlekel si 2 karti!')
-                            elif x == 3:
-                                print('Vlekel si 3 karte!')
-                            else:
-                                print(f'Vlekel si {x} kart!')
-                            kljuc = False
-                    else:
-                        verjetnost = random.random()
-                        if verjetnost <= 0.75:
-                            igra.poklic(vnos)
-                            for _ in range(4):
-                                karta = random.choice(igra.trenutni_kupcek)
-                                igra.trenutni_kupcek.remove(karta)
-                                kazen.append(karta)
-                                if len(igra.trenutni_kupcek) < 1:
-                                    igra.zmesaj()
-                            igra.naslednji()
-                        else: 
-                            igra.igralci[igra.trenutni_igralec] += kazen
-                            x = len(kazen)
-                            y = igra.trenutni_igralec
-                            if x == 2:
-                                print(f'Nasprotnik{y} je vlekel 2 karti!')
-                            elif x == 3:
-                                print(f'Nasprotnik{y} je vlekel 3 karte!')
-                            else:
-                                print(f'Nasprotnik{y} je vlekel {x} kart!')
-                            kljuc = False
-                if kljuc:
-                    if igra.trenutni_igralec == 0:
-                        igra.igralci[0] += kazen
-                        x = len(kazen)
-                        if x == 2:
-                            print('Vlekel si 2 karti!')
-                        elif x == 3:
-                            print('Vlekel si 3 karte!')
-                        else:
-                            print(f'Vlekel si {x} kart!')
-                    else:  
-                        igra.igralci[igra.trenutni_igralec] += kazen
-                        x = len(kazen)
-                        y = igra.trenutni_igralec
-                        if x == 2:
-                            print(f'Nasprotnik{y} je vlekel 2 karti!')
-                        elif x == 3:
-                            print(f'Nasprotnik{y} je vlekel 3 karte!')
-                        else:
-                            print(f'Nasprotnik{y} je vlekel {x} kart!')   
-                igra.zgorne_karte.append((zgorna_karta[1], zgorna_karta[1]))
-                if len(igra.zgorne_karte) > 5:
-                    igra.zgorne_karte.pop(0) 
-            igra.naslednji()
-            #enter()
+            krog_nasprotnik(vnos, True)
+        enter()
         igra.izpadel()
         if igra.konec_igre():
             if igra.igralci[0] == []:
@@ -896,19 +714,11 @@ def main():
                 return
             else: 
                 print('IZGUBIL SI.')
-                return 
+                return
+        igra.naslednji() 
 
 
 
-
-
-
-
-
-
-
-
-
-
+main()
 
 
