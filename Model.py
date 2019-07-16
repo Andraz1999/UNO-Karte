@@ -304,14 +304,6 @@ class Igra:
         return izbira[1]
 
 
-    
-#
-#a = Igra()
-#a.priprava_za_igro()
-#while len(a.igralci[a.trenutni_igralec]) < 21:
-#    a.vleci()
-#a.izpadel()
-#print(len(a.igralci[a.trenutni_igralec]))
 
 
 
