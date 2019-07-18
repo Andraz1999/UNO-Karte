@@ -72,7 +72,7 @@ class Igra:
         if izbira > 3:
             izbira = 0
         while self.igralci[izbira] == [] or self.igralci[izbira] == IZPADEL:
-            izbira = self.trenutni_igralec + self.smer
+            izbira += self.smer
             if izbira < 0:
                 izbira = 3
             if izbira > 3:
@@ -119,6 +119,8 @@ class Igra:
 
     def konec_igre(self):
         if self.igralci[0] == IZPADEL:
+            return True
+        if self.igralci[1] == IZPADEL and self.igralci[2] == IZPADEL and self.igralci[3] == IZPADEL:
             return True
         igralci = 0
         for i in self.igralci:
@@ -248,6 +250,7 @@ class Igra:
 
 
     def nasprotnik(self):
+        roka = self.igralci[self.trenutni_igralec]
         mozni = self.mozne_izbire()
         if mozni == []:
             return VLECI
@@ -273,11 +276,11 @@ class Igra:
         inteligenca = random.random()
         if inteligenca < verjet_vleci:
             return VLECI
-        elif inteligenca < verjet_pet:
+        elif inteligenca < verjet_pet and (VLECI_PET, CRNA) in roka:
             return (VLECI_PET, CRNA)
-        elif inteligenca < verjet_crne:
+        elif inteligenca < verjet_crne and crne != []:
             return random.choice(crne)
-        elif inteligenca < verjet_pos:
+        elif inteligenca < verjet_pos and poseben != []:
             return random.choice(poseben)
         for i in mozni:
             n = mozni.count(i)

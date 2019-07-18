@@ -6,18 +6,18 @@ zgorna = (
     '|==============================================================================================================|\n'
     '|                                       ______                Trenutni:   {ena} |                        |\n'
     '|                                      |      |               Naslednji:  {dva} |   LEGENDA:             |\n'
-    '|                       Nasprotnik2    |  {aa}  |   {aaa}                                 |   RDECA = rd           |\n' 
-    '|                                      |      |                                       |   RUMENA = ru          |\n'
-    '|                                      |______|                                       |   MODRA = mo           |\n'
-    '|                                                                                     |   ZELENA = ze          |\n'
-    '|     Nasprotnik1                       Kupček                         Nasprotnik3    |   CRNA = cr            |\n'
-    '|      ______                           ______                          ______        |   ZAMENJAJ STRAN = ⟳   |\n'
+    '|                       Nasprotnik2    |  {aa}  |   {aaa}                                 |   rd = RDECA           |\n' 
+    '|                                      |      |                                       |   ru = RUMENA          |\n'
+    '|                                      |______|                                       |   mo = MODRA           |\n'
+    '|                                                                                     |   ze = ZELENA          |\n'
+    '|     Nasprotnik1                       Kupček                         Nasprotnik3    |   cr = CRNA            |\n'
+    '|      ______                           ______                          ______        |   ⟳ = ZAMENJAJ STRAN   |\n'
     '|     |      |                         |      |                        |      |       |   STOP = st            |\n'
-    '|     |  {bb}  |   {bbb}                   |  {cc}  |                  {ccc}   |  {ee}  |       |   SPREMENI BARVO = sp  |\n'
-    '|     |      |                         |  {dd}  |                        |      |       |   VLECI DVE = +2       |\n'
-    '|     |______|                         |______|                        |______|       |   VLECI STIRI = +4     |\n'
-    '|                                                                                     |   VLECI PET = +5       |\n'
-    '|                                                                                     |   IZPADEL = X          |\n'
+    '|     |  {bb}  |   {bbb}                   |  {cc}  |                  {ccc}   |  {ee}  |       |   sp = SPREMENI BARVO  |\n'
+    '|     |      |                         |  {dd}  |                        |      |       |   +2 = VLECI DVE       |\n'
+    '|     |______|                         |______|                        |______|       |   +4 = VLECI STIRI     |\n'
+    '|                                                                                     |   +5 = VLECI PET       |\n'
+    '|                                                                                     |   X = IZPADEL          |\n'
     '|                                                                                     |                        |'
 )
 
@@ -40,7 +40,7 @@ def titelscreen():
         '|                                                  |       |                          |\n'
         '|                                                  |_______|                          |\n'
         '|                                                                                     |\n'
-        '|                                                                                     |\n'
+        '|                                                 Andraž Pustoslemšek 2019, poletje   |\n'
         '|                                                                                     |\n'
         '|=====================================================================================|'
     )
@@ -75,12 +75,7 @@ def tutorial1():
     
     return
 
-def tutorial2():
-    print('blablabla')
-    
 
-def tutorial3():
-    print('tratralalala')
 
 def enter():
     vnos = input('---> Za nadaljevanje pritisnite ENTER <---')
@@ -520,7 +515,7 @@ def main():
         elif len(ig) == 20:
             prikaz_igralca20(ig[0][0], ig[0][1], ig[1][0], ig[1][1], ig[2][0], ig[2][1], ig[3][0], ig[3][1], ig[4][0], ig[4][1], ig[5][0], ig[5][1], ig[6][0], ig[6][1], ig[7][0], ig[7][1], ig[8][0], ig[8][1], ig[9][0], ig[9][1], ig[10][0], ig[10][1], ig[11][0], ig[11][1], ig[12][0], ig[12][1], ig[13][0], ig[13][1], ig[14][0], ig[14][1], ig[15][0], ig[15][1], ig[16][0], ig[16][1], ig[17][0], ig[17][1], ig[18][0], ig[18][1], ig[19][0], ig[19][1])
         else: 
-            print('igralec ima prevec kart')
+            print('Žal imaš preveč kart.')
     ###################################################
     def poteza():
         while True:
@@ -570,6 +565,8 @@ def main():
                 verjetnost = random.random()
                 if verjetnost <= 0.8:
                     igra.poklic(vnos)
+                    print(f'Nasprotnik{igra.trenutni_igralec} je poklical karto {vnos}.')
+                    enter()
                     for _ in range(n):
                         karta = random.choice(igra.trenutni_kupcek)
                         igra.trenutni_kupcek.remove(karta)
@@ -594,8 +591,8 @@ def main():
                 x = len(kazen)
                 if x == 2:
                     print('Vlekel si 2 karti!')
-                elif x == 3:
-                    print('Vlekel si 3 karte!')
+                elif x == 3 or x == 4:
+                    print(f'Vlekel si {x} karte!')
                 else:
                     print(f'Vlekel si {x} kart!')
             else:  
@@ -604,8 +601,8 @@ def main():
                 y = igra.trenutni_igralec
                 if x == 2:
                     print(f'Nasprotnik{y} je vlekel 2 karti!')
-                elif x == 3:
-                    print(f'Nasprotnik{y} je vlekel 3 karte!')
+                elif x == 3 or x == 4:
+                    print(f'Nasprotnik{y} je vlekel {x} karte!')
                 else:
                     print(f'Nasprotnik{y} je vlekel {x} kart!') 
         igra.zgorne_karte.append((zgorna_karta, zgorna_karta))
@@ -711,14 +708,222 @@ def main():
         if igra.konec_igre():
             if igra.igralci[0] == []:
                 print('ZMAGAL SI!!!')
-                return
+                enter()
+                uno_karte()
+            elif igra.igralci[1] == Model.IZPADEL and igra.igralci[2] == Model.IZPADEL and igra.igralci[3] == Model.IZPADEL:
+                print('ZMAGAL SI, ker imajo nasprotniki preveč kart!!!')
+                enter()
+                uno_karte() 
             else: 
                 print('IZGUBIL SI.')
-                return
+                enter()
+                uno_karte()
         igra.naslednji() 
 
 
+def tutorial2():
+    izpis = (
+        '|=====================================================================================|\n'
+        '|                                     VRSTE KART                                      |\n'
+        '|                                                                                     |\n'
+        '|      V tej igri so uporabljene čisto navadne karte, ki se uporabljajo v             |\n'
+        '|      običajnih UNO kartah. Zato tudi ne bom razložil, kaj naredijo karte z          |\n'
+        '|      številkami, spremeni smer, spremeni barvo in stop.                             |\n'
+        '|      Razložim pa lahko naslednje:                                                   |\n'
+        '|      Karta +2 pomeni, da naslednji igralec vleče dve karti, razen, če ima tudi      |\n'
+        '|      sam enako karto +2 in jo pokliče. V tem primeru vleče naslednji igralec        |\n'
+        '|      štiri karte in tako naprej. Tisti, ki vleče te karte bo preskočen, barva       |\n'
+        '|      za naslednjega igralca pa se ponastavi na barvo, ki je bila prej.              |\n'
+        '|      Za +4 karte velja podobno, pri +5 pa vsak (razen tistega, ki jo je poklical)   |\n'
+        '|      vleče pet kart.                                                                |\n'
+        '|      Dve karti z isto barvo in številko (ali enako) lahko pokličemo v isti potezi.  |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|=====================================================================================|'
+    )
+    print(izpis)
 
-main()
+def tutorial3():
+    izpis = (
+        '|=====================================================================================|\n'
+        '|                                     BARVE IN VNOS                                   |\n'
+        '|                                                                                     |\n'
+        '|      V tej igri imamo pet vrst barv. Poleg osnovnih rdeča, modra, rumena in         |\n'
+        '|      zelena, imamo še črno, ki samo pomeni, da lahko to karto pokličeš na           |\n'
+        '|      katerokoli barvo. Črne karte so samo "sprememba barve", "+2", "+4" in "+5".    |\n'
+        '|                                                                                     |\n'
+        '|      Pri vnosih pa samo pazite, da vnesete to, kar je od vas zahtevano. Možne       |\n'
+        '|      izbire so označene z "".                                                       |\n'
+        '|      Pri DA/NE vprašanjih, napišite "da" ali "ne".                                  |\n'
+        '|      Pri vprašanjih za spremembo barve pa "rd", "ru, "mo" ali "ze".                 |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|      Zdaj si pa poglejmo igralno polje:                                             |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|                                                                                     |\n'
+        '|=====================================================================================|'
+    )
+    print(izpis)
 
 
+
+prikaz_vsega = (
+    '|==============================================================================================================|\n'
+    '| [(\' 4\', \'rd\')]                                                                                           |\n'
+    '|==============================================================================================================|\n'
+    '|                                       ______                Trenutni:   Igralec     |                        |\n'
+    '|                                      |      |               Naslednji:  Nasprotnik1 |   LEGENDA:             |\n'
+    '|                       Nasprotnik2    |   5  |                                       |   rd = RDECA           |\n' 
+    '|                                      |      |                                       |   ru = RUMENA          |\n'
+    '|                                      |______|                                       |   mo = MODRA           |\n'
+    '|                                                                                     |   ze = ZELENA          |\n'
+    '|     Nasprotnik1                       Kupček                         Nasprotnik3    |   cr = CRNA            |\n'
+    '|      ______                           ______                          ______        |   ⟳ = ZAMENJAJ STRAN   |\n'
+    '|     |      |                         |      |                        |      |       |   STOP = st            |\n'
+    '|     |  17  |                         |   4  |                        |   8  |       |   sp = SPREMENI BARVO  |\n'
+    '|     |      |                         |  rd  |                        |      |       |   +2 = VLECI DVE       |\n'
+    '|     |______|                         |______|                        |______|       |   +4 = VLECI STIRI     |\n'
+    '|                                                                                     |   +5 = VLECI PET       |\n'
+    '|                                                                                     |   X = IZPADEL          |\n'
+    '|                                                                                     |                        |\n'
+    '|==============================================================================================================|\n'
+    '|  Igralec    __1___       __2___       __3___       __4___       __5___       __6___       __7___             |\n'
+    '|            |      |     |      |     |      |     |      |     |      |     |      |     |      |            |\n'
+    '|            |   4  |     |   2  |     |  st  |     |   2  |     |  +2  |     |   9  |     |  sp  |            |\n'
+    '|            |  rd  |     |  ru  |     |  ze  |     |  ru  |     |  cr  |     |  mo  |     |  cr  |            |\n'
+    '|            |______|     |______|     |______|     |______|     |______|     |______|     |______|            |\n'
+    '|                                                                                                              |\n'
+    '|==============================================================================================================|'
+)
+
+def tutorial4():
+    prikaz = (
+    '|==============================================================================================================|\n'
+    '| [(\' 4\', \'rd\')]  ##### TUKAJ NOTRI JE NAPISANIH NAZADNJE POKLICANIH PET KART. #####                           |\n'
+    '|==============================================================================================================|\n'
+    '|                                       ______                Trenutni:   Igralec     |                        |\n'
+    '|                                      |      |               Naslednji:  Nasprotnik1 |   LEGENDA:             |\n'
+    '|                       Nasprotnik2    |   5  |                                       |   rd = RDECA           |\n' 
+    '|                                      |      |                                       |   ru = RUMENA          |\n'
+    '|                                      |______|                                       |   mo = MODRA           |\n'
+    '|                                                                                     |   ze = ZELENA          |\n'
+    '|     Nasprotnik1                       Kupček                         Nasprotnik3    |   cr = CRNA            |\n'
+    '|      ______                           ______                          ______        |   ⟳ = ZAMENJAJ STRAN   |\n'
+    '|     |      |                         |      |                        |      |       |   STOP = st            |\n'
+    '|     |  17  |                         |   4  |                        |   8  |       |   sp = SPREMENI BARVO  |\n'
+    '|     |      |                         |  rd  |                        |      |       |   +2 = VLECI DVE       |\n'
+    '|     |______|                         |______|                        |______|       |   +4 = VLECI STIRI     |\n'
+    '|                                                                                     |   +5 = VLECI PET       |\n'
+    '|                                                                                     |   X = IZPADEL          |\n'
+    '|                                                                                     |                        |\n'
+    '|==============================================================================================================|\n'
+    '|  Igralec    __1___       __2___       __3___       __4___       __5___       __6___       __7___             |\n'
+    '|            |      |     |      |     |      |     |      |     |      |     |      |     |      |            |\n'
+    '|            |   4  |     |   2  |     |  st  |     |   2  |     |  +2  |     |   9  |     |  sp  |            |\n'
+    '|            |  rd  |     |  ru  |     |  ze  |     |  ru  |     |  cr  |     |  mo  |     |  cr  |            |\n'
+    '|            |______|     |______|     |______|     |______|     |______|     |______|     |______|            |\n'
+    '|                                                                                                              |\n'
+    '|==============================================================================================================|'
+    )
+    print(prikaz)
+def tutorial5():
+    prikaz = (
+    '|==============================================================================================================|\n'
+    '| [(\' 4\', \'rd\')]                                                                                               |\n'
+    '|==============================================================================================================|\n'
+    '|   Igrajo 4 igralci, torej imaš 3      ______                Trenutni:   Igralec     |                        |\n'
+    '|   nasprotnike. V pravokotnikih       |      |               Naslednji:  Nasprotnik1 |   LEGENDA:             |\n'
+    '|   je zapisano, koliko kart še        |   5  |     Zgoraj piše, kdo je trenutno      |   rd = RDECA           |\n' 
+    '|   imajo v roki.                      |      |     na vrsti in kdo bo naslednji.     |   ru = RUMENA          |\n'
+    '|                                      |______|                                       |   mo = MODRA           |\n'
+    '|                                                                                     |   ze = ZELENA          |\n'
+    '|     Nasprotnik1                       Kupček                         Nasprotnik3    |   cr = CRNA            |\n'
+    '|      ______                           ______                          ______        |   ⟳ = ZAMENJAJ STRAN   |\n'
+    '|     |      |                         |      |                        |      |       |   STOP = st            |\n'
+    '|     |  17  |                         |   4  |                        |   8  |       |   sp = SPREMENI BARVO  |\n'
+    '|     |      |                         |  rd  |                        |      |       |   +2 = VLECI DVE       |\n'
+    '|     |______|                         |______|                        |______|       |   +4 = VLECI STIRI     |\n'
+    '|                                                                                     |   +5 = VLECI PET       |\n'
+    '|     Kupček na sredini pokaže, katera je vrhnja karta. (Kot pri navadni igri)        |   X = IZPADEL          |\n'
+    '|                                                                                     |                        |\n'
+    '|==============================================================================================================|\n'
+    '|  Igralec    __1___       __2___       __3___       __4___       __5___       __6___       __7___             |\n'
+    '|            |      |     |      |     |      |     |      |     |      |     |      |     |      |            |\n'
+    '|            |   4  |     |   2  |     |  st  |     |   2  |     |  +2  |     |   9  |     |  sp  |            |\n'
+    '|            |  rd  |     |  ru  |     |  ze  |     |  ru  |     |  cr  |     |  mo  |     |  cr  |            |\n'
+    '|            |______|     |______|     |______|     |______|     |______|     |______|     |______|            |\n'
+    '| Tukaj pa je tvoja dlan. Izebereš lahko zaporedno številko karte, ki jo želiš poklicati. 0 pomeni vleci karto.|\n'
+    '|==============================================================================================================|'
+    )
+    print(prikaz)
+
+def tutorial6():
+    prikaz = (
+    '|==============================================================================================================|\n'
+    '| [(\' 4\', \'rd\')]                                                                                               |\n'
+    '|==============================================================================================================|\n'
+    '|      V glavnem je to vse, kar je treba vedeti o tej igri.                           |                        |\n'
+    '|      Na desni strani je za vsak slučaj legenda, ki ti pove,                         |   LEGENDA:             |\n'
+    '|      kaj določen izraz na karti pomeni.                                             |   rd = RDECA           |\n' 
+    '|                                                                                     |   ru = RUMENA          |\n'
+    '|                                                                                     |   mo = MODRA           |\n'
+    '|      Edina stvar je še to, da ima lahko igralec največ 20 kart.                     |   ze = ZELENA          |\n'
+    '|      Torej bodo tisti, ki preizkušajo mejo, koliko kart lahko v rokah držijo,       |   cr = CRNA            |\n'
+    '|      izpadli in to se označi s črko "X".                                            |   ⟳ = ZAMENJAJ STRAN   |\n'
+    '|                                                                                     |   STOP = st            |\n'
+    '|      Igre je takoj konec, če imaš v roki več kot 20 kart, ali pa kdo zmaga.         |   sp = SPREMENI BARVO  |\n'
+    '|                                                                                     |   +2 = VLECI DVE       |\n'
+    '|      Želim vam veliko zabave pri igranju teh UNO kart.                              |   +4 = VLECI STIRI     |\n'
+    '|                                                                                     |   +5 = VLECI PET       |\n'
+    '|                                                                                     |   X = IZPADEL          |\n'
+    '|                                                                                     |                        |\n'
+    '|==============================================================================================================|\n'
+    '|  Igralec    __1___       __2___       __3___       __4___       __5___       __6___       __7___             |\n'
+    '|            |      |     |      |     |      |     |      |     |      |     |      |     |      |            |\n'
+    '|            |   4  |     |   2  |     |  st  |     |   2  |     |  +2  |     |   9  |     |  sp  |            |\n'
+    '|            |  rd  |     |  ru  |     |  ze  |     |  ru  |     |  cr  |     |  mo  |     |  cr  |            |\n'
+    '|            |______|     |______|     |______|     |______|     |______|     |______|     |______|            |\n'
+    '|                                                                                                              |\n'
+    '|==============================================================================================================|'
+    )
+    print(prikaz)
+
+
+def uno_karte():
+    titelscreen()
+    skip = enter()
+    if skip == 'START':
+        main()
+    tutorial1()
+    skip = enter()
+    if skip == 'START':
+        main()
+    tutorial2()
+    skip = enter()
+    if skip == 'START':
+        main()
+    tutorial3()
+    skip = enter()
+    if skip == 'START':
+        main()
+    tutorial4()
+    skip = enter()
+    if skip == 'START':
+        main()
+    tutorial5()
+    skip = enter()
+    if skip == 'START':
+        main()
+    tutorial6()
+    skip = enter()
+    main()
+    
+
+
+uno_karte()
