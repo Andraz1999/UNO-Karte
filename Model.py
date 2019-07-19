@@ -394,7 +394,12 @@ class Uno:
             else:
                 igra.igralci[igra.trenutni_igralec] += kazen
                 kazen = []
-                igra.naslednji
+                zgorna = igra.zgorna_barvna_karte()
+                igra.zgorne_karte.append((zgorna[1], zgorna[1]))
+                if len(igra.zgorne_karte) > 5:
+                    igra.zgorne_karte.pop(0)
+                stanje = igra.stanje()
+                igra.naslednji()
                 self.igre[id_igre] = (igra, stanje, 0, kazen)
         elif vnos[0] == VLECI_STIRI:
             for _ in range(4):
@@ -409,7 +414,12 @@ class Uno:
             else:
                 igra.igralci[igra.trenutni_igralec] += kazen
                 kazen = []
-                igra.naslednji
+                zgorna = igra.zgorna_barvna_karte()
+                igra.zgorne_karte.append((zgorna[1], zgorna[1]))
+                if len(igra.zgorne_karte) > 5:
+                    igra.zgorne_karte.pop(0)
+                stanje = igra.stanje()
+                igra.naslednji()
                 self.igre[id_igre] = (igra, stanje, 0, kazen)
         else:
             igra.naslednji()
@@ -423,7 +433,7 @@ class Uno:
         vnos = igra.zgorne_karte[-1]
         if da:
             igra.poklic(vnos)
-            igra.naslednji
+            igra.naslednji()
         stanje = igra.stanje()
         self.igre[id_igre] = (igra, stanje, 0, kazen)
 
@@ -476,6 +486,10 @@ class Uno:
             igra.igralci[igra.trenutni_igralec] += kazen
             kazen = []
             igra.naslednji()
+            zgorna = igra.zgorna_barvna_karte()
+            igra.zgorne_karte.append((zgorna[1], zgorna[1]))
+            if len(igra.zgorne_karte) > 5:
+                igra.zgorne_karte.pop(0)
             stanje = stanje()
             self.igre[id_igre] = (igra, stanje, 0, kazen)
 
