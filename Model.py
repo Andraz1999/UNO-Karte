@@ -41,8 +41,8 @@ ZACETNO_STEVILO_KART = 7
 NAJVECJE_STEVILO_KART = 20
 IZPADEL = 'IZPADEL'
 
-ZMAGA = 'ZMAGA!'
-
+ZMAGA = 'ZMAGA'
+PORAZ = 'PORAZ'
 
 class Igra:
 
@@ -305,9 +305,184 @@ class Igra:
             return random.choice[RDECA, RUMENA, MODRA, ZELENA]
         izbira = random.choice(seznam)
         return izbira[1]
+    
+    def zgorna_barvna_karta(self):
+        to = []
+        for i in self.zgorne_karte:
+            to = [i] + to
+        for i in to:
+            if i[1] in [RDECA, RUMENA, MODRA, ZELENA]:
+                return i
+    def stanje(self):
+        if self.konec_igre():
+            if self.igralci[0] == []:
+                return ZMAGA
+            elif self.igralci[1] == IZPADEL and self.igralci[2] == IZPADEL and self.igralci[3] == IZPADEL:
+                return ZMAGA
+            else: 
+                return PORAZ
+        else:
+            return V_SREDINI
+
+##########################################################################################################
+#Za Spletni vmesnik:
+ZACETEK = 'ZACETEK'
+V_SREDINI = 'V_SREDINI'
+
+class Uno:
+    def __init__(self):
+        self.igre = {}
+
+    def prost_id_igre(self):
+        if self.igre == {}:
+            return 0
+        else:
+            for i in range(len(self.igre) + 1):
+                if i not in self.igre.keys():
+                    return i
+        
+    def nova_igra(self):
+        igra = Igra()
+        igra.priprava_za_igro()
+        id = self.prost_id_igre()
+        self.igre[id] = (igra, ZACETEK, 0, [])
+        return id
+
+    def poklic_karte0(self, id_igre, karta):
+        igra = self.igre[id_igre][0]
+        kazen = self.igre[id_igre][3]
+        igra.poklic(karta)
+        stanje = igra.stanje() 
+        zgorna = self.zgorna_barvna_karta()
+        self.igre[id_igre] = (igra, stanje, 1, kazen)
+
+    def kaj_karta_naredi1(self, id_igre, kljuc=True):
+        igra = self.igre[id_igre][0]
+        stanje = self.igre[id_igre][1]
+        kazen = self.igre[id_igre][3]
+        vnos = igra.zgorne_karte[-1]
+        if kljuc and vnos[1] in [RDECA, RUMENA, MODRA, ZELENA] and vnos in igra.igralci[igra.trenutni_igralec]:
+            self.igre[id_igre] = (igra, stanje, 2, kazen)
+        elif vnos == VLECI:
+            nova = igra.igralci[igra.trenitni_igralec][-1]
+            if nova in igra.mozne_izbire():
+                self.igre[id_igre] = (igra, stanje, 3, kazen)
+        elif vnos[0] == ZAMENJAJ_STRAN:
+            igra.zamenjaj_smer()
+            igra.nasledji()
+            self.igre[id_igre] = (igra, stanje, 0, kazen)
+        elif vnos[0] == STOP:
+            igra.nasledji()
+            igra.nasledji()
+            self.igre[id_igre] = (igra, stanje, 0, kazen)
+        elif vnos[0] == SPREMENI_BARVO:
+            self.igre[id_igre] = (igra, stanje, 4, kazen)
+        elif vnos[0] == VLECI_PET:
+            zgorna = igra.zgorna_barvna_karta()
+            igra.vleci_pet(zgorna[1])
+            self.igre[id_igre] = (igra, stanje, 0, kazen)
+        elif vnos[0] == VLECI_DVE:
+            for _ in range(2):
+                karta = random.choice(igra.trenutni_kupcek)
+                igra.trenutni_kupcek.remove(karta)
+                kazen.append(karta)
+                if len(igra.trenutni_kupcek) < 1:
+                    igra.zmesaj()
+            igra.naslednji()
+            if vnos in igra.igralci[igra.trenutni_igralec]:
+                self.igre[id_igre] = (igra, stanje, 5, kazen)
+            else:
+                igra.igralci[igra.trenutni_igralec] += kazen
+                kazen = []
+                igra.naslednji
+                self.igre[id_igre] = (igra, stanje, 0, kazen)
+        elif vnos[0] == VLECI_STIRI:
+            for _ in range(4):
+                karta = random.choice(igra.trenutni_kupcek)
+                igra.trenutni_kupcek.remove(karta)
+                kazen.append(karta)
+                if len(igra.trenutni_kupcek) < 1:
+                    igra.zmesaj()
+            igra.naslednji()
+            if vnos in igra.igralci[igra.trenutni_igralec]:
+                self.igre[id_igre] = (igra, stanje, 5, kazen)
+            else:
+                igra.igralci[igra.trenutni_igralec] += kazen
+                kazen = []
+                igra.naslednji
+                self.igre[id_igre] = (igra, stanje, 0, kazen)
+        else:
+            igra.naslednji()
+            self.igre[id_igre] = (igra, stanje, 0, kazen)
+
+
+    def ali_dve_enaki2(self, id_igre, da=False):
+        igra = self.igre[id_igre][0]
+        stanje = self.igre[id_igre][1]
+        kazen = self.igre[id_igre][3]
+        vnos = igra.zgorne_karte[-1]
+        if da:
+            igra.poklic(vnos)
+            igra.naslednji
+        stanje = igra.stanje()
+        self.igre[id_igre] = (igra, stanje, 0, kazen)
+
+
+    def vleci3(self, id_igre, da=False):
+        igra = self.igre[id_igre][0]
+        stanje = self.igre[id_igre][1]
+        kazen = self.igre[id_igre][3]
+        vnos = igra.zgorne_karte[-1]
+        nova = igra.igralci[igra.trenitni_igralec][-1]
+        if da:
+            igra.poklic(nova)
+            stanje = igra.stanje()
+            self.igre[id_igre] = (igra, stanje, 1, kazen)
+            self.kaj_karta_naredi1(id_igre, False)
+        else:
+            igra.naslednji()
+            self.igre[id_igre] = (igra, stanje, 0, kazen)
+
+    def sprememba_barve4(self, id_igre, barva):
+        igra = self.igre[id_igre][0]
+        stanje = self.igre[id_igre][1]
+        kazen = self.igre[id_igre][3]
+        vnos = igra.zgorne_karte[-1]
+        igra.sprememba_barve(barva)
+        igra.naslednji()
+        self.igre[id_igre] = (igra, stanje, 0, kazen)
+
+    def vleci_kazen5(self, id_igre, da=False):
+        igra = self.igre[id_igre][0]
+        stanje = self.igre[id_igre][1]
+        kazen = self.igre[id_igre][3]
+        vnos = igra.zgorne_karte[-1]
+        if da:
+            igra.poklic(vnos)
+            stanje = igra.stanje()
+            self.igre[id_igre] = (igra, stanje, 1, kazen)
+            self.kaj_karta_naredi1(id_igre, False)
+        else:
+            if vnos[0] == VLECI_DVE:
+                n = 2
+            elif vnos[0] == VLECI_STIRI:
+                n = 4
+            for _ in range(n):
+                karta = random.choice(igra.trenutni_kupcek)
+                igra.trenutni_kupcek.remove(karta)
+                kazen.append(karta)
+                if len(igra.trenutni_kupcek) < 1:
+                    igra.zmesaj()
+            igra.igralci[igra.trenutni_igralec] += kazen
+            kazen = []
+            igra.naslednji()
+            stanje = stanje()
+            self.igre[id_igre] = (igra, stanje, 0, kazen)
 
 
 
+
+            
 
 
 

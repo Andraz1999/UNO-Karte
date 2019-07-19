@@ -83,23 +83,6 @@ def enter():
     return vnos
 
 
-
-def zacetek():
-    titelscreen()
-    poskus = enter()
-    if poskus == 'START':
-        tutorial3()
-    else:
-        tutorial1()
-    poskus = enter()
-    if poskus == 'START':
-        tutorial3()
-    else:
-        tutorial2()
-    poskus = enter()
-    tutorial3()
-    return
-
 def prikaz_zgornih(zgorne):
     prikaz = (
         '|==============================================================================================================|'
