@@ -326,8 +326,8 @@ class Igra:
 
 ##########################################################################################################
 #Za Spletni vmesnik:
-ZACETEK = 'ZACETEK'
-V_SREDINI = 'V_SREDINI'
+ZACETEK = 'ZAČETEK'
+V_SREDINI = 'V SREDINI'
 
 class Uno:
     def __init__(self):
@@ -353,7 +353,7 @@ class Uno:
         kazen = self.igre[id_igre][3]
         igra.poklic(karta)
         stanje = igra.stanje() 
-        zgorna = self.zgorna_barvna_karta()
+        zgorna = igra.zgorna_barvna_karta()
         self.igre[id_igre] = (igra, stanje, 1, kazen)
 
     def kaj_karta_naredi1(self, id_igre, kljuc=True):
