@@ -42,7 +42,7 @@ def poteza(id_igre):
         karta = Model.VLECI
         uno.poklic_karte0(id_igre, karta)
         bottle.redirect('/igra/ ' + str(id_igre))
-        #bottle.redirect('/igra/ ' + str(id_igre) + '/' + str(karta))
+        #bottle.redirect('/igra/ ' + str(id_igre) + '/' + ali je prav 1 ? str(karta))
     else:
         karta = igra.igralci[igra.trenutni_igralec][vnos - 1]
         if karta in igra.mozne_izbire():
