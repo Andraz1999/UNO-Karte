@@ -26,11 +26,11 @@
 
 
 
-<table align= 'center' border="0" cellspacing="0" cellpadding="8" width="700px">
+<table align= 'center' border="0" cellspacing="0" cellpadding="8" width="1000px">
  
 
 <tr>
-    <td colspan="3">
+    <td colspan="4">
         <h4 align = 'center'>Nasprotnik2</h4>
         <p align = 'center'> 
        
@@ -58,13 +58,15 @@
 
 <td>
     <p align='center'> 
-% zgorna = igra.zgorne_karte[-1]
-            <p><img align= 'center' src= 'kjkjkj.jpg' alt= "{{ zgorna }}" height="120"/></p>
+            % zgorna = igra.zgorne_karte[-1]
+            % zgorna_karta = '/static/' + str(zgorna) + '.jpg'
+                        <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
             
-
+                    </p></td><td>
             <figure>
-                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
                     <figcaption>Kupček</figcaption> 
+                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
+                    
                     </figure>
 
 
@@ -83,7 +85,7 @@
 </p> </td> 
 </tr>
 <tr>
-<td colspan="3" id="spodnja">
+<td colspan="4" id="spodnja">
     <h4 align='center'>Tvoje karte</h4>
     <p align= 'center'>
 

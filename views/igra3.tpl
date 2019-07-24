@@ -58,11 +58,11 @@
 
 <td>
     <p align='center'> 
-            % zgorna = igra.zgorne_karte[-1]
-            % zgorna_karta = '/static/' + str(zgorna) + '.jpg'
-                        <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
-                    </p></td><td>           
-
+% zgorna = igra.zgorne_karte[-1]
+% zgorna_karta = '/static/' + str(zgorna) + '.jpg'
+            <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
+            
+</p></td><td>
             <figure>
                     <figcaption>Kupček</figcaption> 
                     <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
@@ -71,7 +71,7 @@
 
 
             
-          
+           
 </td>
 <td>
  <h4 align= 'right'>Nasprotnik3</h4>
@@ -95,17 +95,21 @@
     
                     <img src= "{{ slika }}",  alt = "{{ karta }}", height="150"/>
             % end
-          
+           
        
         
 
     </p>
 </td>
-<td> <p>Te karte ne moreš poklicati</p>
-    % potrebno = '/igra/' + id_igre
-        <form action="{{potrebno}}", method='GET'>
-        <button type="submit">V redu</button>
-      </form>
-</td>
+</tr>
+<tr>
+    <td>
+        <p>Ali želiš zdaj poklicati to karto, ki si jo vlekel <b>{{igra.igralci[0][-1]}}</b>? </p>
+% to = "/poglej3/" + id_igre
+        <form action="{{to}}" method="post">
+            <button type="submit" name= "ali" value= 'da'>Da</button>
+            <button type="submit" name= "ali" value= 'ne'>Ne</button>
+          </form>
+    </td>
 </tr>
 </table>
