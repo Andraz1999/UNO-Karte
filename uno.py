@@ -29,8 +29,19 @@ def prikaz_pravil():
 @bottle.get('/igra/<id_igre>')
 def prikazi_igro(id_igre):
     (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
-    return bottle.template('igra.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
-
+    if stanje == Model.ZMAGA:
+        return bottle.template('zmaga.tpl')
+    elif stanje == Model.PORAZ:
+        return bottle.template('poraz.tpl')
+    if igra.trenutni_igralec == 0:
+        return bottle.template('igra.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    else:
+        karta = igra.nasprotnik()
+        uno.poklic_karte0(int(id_igre), karta)
+        if karta == Model.VLECI:
+            return bottle.template('igranasprotnikvleci.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+        else:
+            return bottle.template('igranasprotnik.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
 
 @bottle.post('/obdelava/<id_igre>')
 def poteza(id_igre):
@@ -57,14 +68,18 @@ def poslji_nazaj(id_igre):
 
 
 
-@bottle.get('/igra/<id_igre>/<vnos>/1')
-def kaj_zdaj(id_igre, vnos):
+@bottle.get('/igra/<id_igre>/<vnos>/<kljuc>')
+def kaj_zdaj(id_igre, vnos, kljuc):
     (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
     if vnos == '0':
         karta = Model.VLECI
     else: 
         karta = igra.zgorne_karte[-1]
-    uno.kaj_karta_naredi1(int(id_igre), karta)
+    if kljuc == '0':
+        kljuc = False
+    else:
+        kljuc == True
+    uno.kaj_karta_naredi1(int(id_igre), karta, kljuc)
     (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
     if kaj == 2:
         return bottle.template('igra2.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
@@ -72,6 +87,15 @@ def kaj_zdaj(id_igre, vnos):
         return bottle.template('igra3.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
     elif kaj == 4:
         return bottle.template('igra4.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 5:
+        return bottle.template('igra5.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 7:
+        return bottle.template('igra7.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 8:
+        return bottle.template('igra8.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 6:
+        if igra.trenutni_igralec == 0:
+            return bottle.template('igra60.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
     else:
         return bottle.redirect('/igra/ ' + str(id_igre))
 
@@ -85,6 +109,7 @@ def daj_dve2(id_igre):
     else:
         vnos = False
     uno.ali_dve_enaki2(int(id_igre), vnos)
+    igra.naslednji()
     (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
     bottle.redirect('/igra/ ' + str(id_igre))
 
@@ -98,7 +123,10 @@ def vleci3(id_igre):
         vnos = False
     uno.vleci3(int(id_igre), vnos)
     (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
-    bottle.redirect('/igra/ ' + str(id_igre))
+    if vnos:
+        bottle.redirect('/igra/ ' + str(id_igre) + '/' + '1/0')
+    else:
+        bottle.redirect('/igra/ ' + str(id_igre))
 
 
 @bottle.post('/poglej4/<id_igre>')
@@ -118,13 +146,80 @@ def barva(id_igre):
     bottle.redirect('/igra/ ' + str(id_igre))
 
 
+@bottle.get('/vlekelkazen/<id_igre>')
+def vlekelkazen(id_igre):
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    kazen = []
+    igra.naslednji()
+    uno.igre[int(id_igre)] = (igra, stanje, kaj, kazen)
+    bottle.redirect('/igra/ ' + str(id_igre))
+
+@bottle.post('/poklickazni/<id_igre>')
+def piklickazni(id_igre):
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    vnos = bottle.request.forms['ali']
+    if vnos == 'da':
+        vnos = True
+    else:
+        vnos = False
+    uno.vleci_kazen6(int(id_igre), vnos)
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    if vnos:
+        bottle.redirect('/igra/ ' + str(id_igre) + '/' + '1/0')
+    else:
+        return bottle.template('igra8.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+
+@bottle.get('/igran/<id_igre>/<vnos>/<kljuc>')
+def kaj_zdajn(id_igre, vnos, kljuc):
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    if vnos == '0':
+        karta = Model.VLECI
+    else: 
+        karta = igra.zgorne_karte[-1]
+    if kljuc == '0':
+        kljuc = False
+    else:
+        kljuc == True
+    uno.kaj_karta_naredi1(int(id_igre), karta, kljuc)
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    if kaj == 2:
+        uno.ali_dve_enaki2(int(id_igre), True)
+        return bottle.template('naspr2.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 3:
+        if random.random() < 0.8:
+            vnos = True
+        else: 
+            vnos = False
+        uno.vleci3(int(id_igre), vnos)
+        (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+        if vnos:
+            return bottle.template('naspr3.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+        else:
+            bottle.redirect('/igra/ ' + str(id_igre))
+            #return bottle.template('igra3.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+        #######################################3
+    elif kaj == 4:
+        barva = igra.nasprotnik_barva()
+        uno.sprememba_barve4(int(id_igre), barva)
+        return bottle.template('naspr4.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 5:
+        return bottle.template('igra5.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 7:
+        return bottle.template('igra7.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 8:
+        return bottle.template('igra8.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    elif kaj == 6:
+        if igra.trenutni_igralec == 0:
+            return bottle.template('igra60.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+    else:
+        return bottle.redirect('/igra/ ' + str(id_igre))
 
 
-
-
-
-
-
+@bottle.get('/vmesnan/<id_igre>')
+def naslednji(id_igre):
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    igra.naslednji()
+    bottle.redirect('/igra/ ' + str(id_igre))
 
 
 

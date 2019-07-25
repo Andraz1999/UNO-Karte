@@ -101,8 +101,7 @@
 
     </p>
 </td>
-</tr>
-<tr>
+#
     <td>
         <p>Ali želiš zdaj poklicati to karto, ki si jo vlekel <b>{{igra.igralci[0][-1]}}</b>? </p>
 % to = "/poglej3/" + id_igre

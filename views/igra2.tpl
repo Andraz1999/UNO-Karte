@@ -85,7 +85,7 @@
 </p> </td> 
 </tr>
 <tr>
-<td colspan="4" id="spodnja">
+<td colspan="3" id="spodnja">
     <h4 align='center'>Tvoje karte</h4>
     <p align= 'center'>
 
@@ -101,8 +101,7 @@
 
     </p>
 </td>
-</tr>
-<tr>
+#
     <td>
         <p>Ali želiš poklicati še eno <b>{{igra.zgorne_karte[-1]}}</b>? </p>
 % to = "/poglej2/" + id_igre

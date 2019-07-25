@@ -58,12 +58,11 @@
 
 <td>
     <p align='center'> 
-% zgorna = igra.zgorne_karte[-1]
-% zgorna_karta = '/static/' + str(zgorna) + '.jpg'
+            % zgorna = igra.zgorne_karte[-1]
+            % zgorna_karta = '/static/' + str(zgorna) + '.jpg'
+                        <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
+                    </p></td><td>           
 
-            <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
-            
-            </p></td><td>
             <figure>
                     <figcaption>Kupček</figcaption> 
                     <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
@@ -72,7 +71,7 @@
 
 
             
-           
+          
 </td>
 <td>
  <h4 align= 'right'>Nasprotnik3</h4>
@@ -96,23 +95,19 @@
     
                     <img src= "{{ slika }}",  alt = "{{ karta }}", height="150"/>
             % end
-           
+          
        
         
 
     </p>
 </td>
-<<<!/tr>>>
-<<<!tr>>>
-    <td>
-        <p>Izberi barvo:</b>? </p>
-% to = "/poglej4/" + id_igre
-        <form action="{{to}}" method="post">
-            <button type="submit" name= "barva" style="background-color: #EF1A0F" value= 'rdeca'>Rdeča</button>
-            <button type="submit" name= "barva" style="background-color: #1F85DE" value= 'modra'>Modra</button>
-            <button type="submit" name= "barva" style="background-color: #DDEF30" value= 'rumena'>Rumena</button>
-            <button type="submit" name= "barva" style="background-color: #1BB70B" value= 'zelena'>Zelena</button>
-          </form>
-    </td>
+% x = str(igra.trenutni_igralec)
+% karta = str(igra.zgorne_karte[-1])
+<td> <p>Nasprotnik{{x}} je poklical 2 <b>{{karta}}</b>.</p>
+    % potrebno = '/vmesnan/' + id_igre 
+        <form action="{{potrebno}}", method='GET'>
+        <button type="submit">V redu</button>
+      </form>
+</td>
 </tr>
 </table>
