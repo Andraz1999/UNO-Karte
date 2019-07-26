@@ -24,7 +24,10 @@
 
 <h2 align='center'> Na vrsti je {{trenutni}}. </h2>
 
-
+1:{{igra.igralci[1]}}
+2:{{igra.igralci[2]}}
+3:{{igra.igralci[3]}}
+{{igra.zgorne_karte}}
 
 <table align= 'center' border="0" cellspacing="0" cellpadding="8" width="1000px">
  

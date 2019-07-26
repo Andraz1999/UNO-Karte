@@ -105,19 +105,19 @@
 % if igra.zgorne_karte[-1][0] == Model.STOP:
 % if igra.trenutni_igralec == 0:
 <td> <p>Preskočili so te...</p>
-    % potrebno = '/igra/' + id_igre
+    % potrebno = '/vmesnan/' + id_igre 
         <form action="{{potrebno}}", method='GET'>
         <button type="submit">V redu</button>
       </form></td>
-      %igra.naslednji()
+
       %else:
       % y = str(igra.trenutni_igralec)
       <td> <p>Preskočili ste Nasprotnika{{y}}.</p>
-    % potrebno = '/igra/' + id_igre
+    % potrebno = '/vmesnan/' + id_igre 
         <form action="{{potrebno}}", method='GET'>
         <button type="submit">V redu</button>
       </form></td>
-      %igra.naslednji()
+      
       %end
 % elif igra.zgorne_karte[-1][0] == Model.ZAMENJAJ_STRAN:
 

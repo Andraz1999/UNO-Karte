@@ -105,7 +105,7 @@
 <<<!/tr>>>
 <<<!tr>>>
     <td>
-        <p>Izberi barvo:</b>? </p>
+        <p>Izberi barvo: </p>
 % to = "/poglej4/" + id_igre
         <form action="{{to}}" method="post">
             <button type="submit" name= "barva" style="background-color: #EF1A0F" value= 'rdeca'>Rdeča</button>

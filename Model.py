@@ -302,7 +302,7 @@ class Igra:
             if karta in BARVNE or karta in POSEBNE_BARVNE:
                 seznam.append(karta)
         if seznam == []:
-            return random.choice[RDECA, RUMENA, MODRA, ZELENA]
+            return random.choice([RDECA, RUMENA, MODRA, ZELENA])
         izbira = random.choice(seznam)
         return izbira[1]
     
@@ -493,7 +493,7 @@ class Uno:
             igra.zgorne_karte.append((zgorna[1], zgorna[1]))
             if len(igra.zgorne_karte) > 5:
                 igra.zgorne_karte.pop(0)
-            stanje = stanje()
+            stanje = igra.stanje()
             #self.igre[id_igre] = (igra, stanje, 0, kazen)
 
 

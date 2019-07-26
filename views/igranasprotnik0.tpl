@@ -101,25 +101,13 @@
 
     </p>
 </td>
-%x = str(len(kazen))
-% if x == '2':
-% sklon = 'karti'
-% elif x == '4':
-%sklon = 'karte'
-% else:
-% sklon = 'kart'
-% end
-%if igra.trenutni_igralec == 0:
-% ubogi = 'Igralec'
-% else:
-% ubogi = 'Nasprotnik' + str(igra.trenutni_igralec)
-% end
-<td> <p>{{ubogi}} je vlekel {{x}} {{sklon}}.</p>
-    % potrebno = '/vlekelkazen/' + id_igre
+% x = str(igra.trenutni_igralec)
+% karta = str(igra.zgorne_karte[-1])
+<td> <p>Nasprotnik{{x}} je poklical <b>{{karta}}</b>.</p>
+    % potrebno = '/igran/' + id_igre + '/' + '1/0'
         <form action="{{potrebno}}", method='GET'>
         <button type="submit">V redu</button>
       </form>
 </td>
 </tr>
-
 </table>
