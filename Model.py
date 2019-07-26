@@ -314,6 +314,7 @@ class Igra:
             if i[1] in [RDECA, RUMENA, MODRA, ZELENA]:
                 return i
     def stanje(self):
+        self.izpadel()
         if self.konec_igre():
             if self.igralci[0] == []:
                 return ZMAGA

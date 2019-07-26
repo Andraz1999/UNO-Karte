@@ -121,7 +121,7 @@
       %end
 % elif igra.zgorne_karte[-1][0] == Model.ZAMENJAJ_STRAN:
 
-<td> <p>Stran se je spremenila.</p>
+<td> <p>Smer se je spremenila.</p>
     % potrebno = '/igra/' + id_igre
         <form action="{{potrebno}}", method='GET'>
         <button type="submit">V redu</button>
