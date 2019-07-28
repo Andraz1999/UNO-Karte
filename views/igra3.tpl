@@ -20,7 +20,7 @@
 % ime1 = '/static/' + 'nasprotnik' + na1 + '.jpg'
 % ime2 = '/static/' + 'nasprotnik' + na2 + '.jpg'
 % ime3 = '/static/' + 'nasprotnik' + na3 + '.jpg'
-% obdelava = '/obdelava/' + id_igre
+% obdelava = '/obdelava'
 
 <h2 align='center'> Na vrsti je {{trenutni}}. </h2>
 
@@ -30,7 +30,19 @@
  
 
 <tr>
-    <td colspan="4">
+<td>
+% if igra.smer == 1:
+% smer = '/static/smer1.png'
+% drgac = 'smer urnega kazalca'
+%else:
+%smer = '/static/smer0.png'
+% drgac = 'nasprotna smer urnega kazalca'
+%end
+        <img src= '{{smer}}' arc= '{{drgac}}' height="150" />
+
+
+    </td>
+    <td colspan="2">
         <h4 align = 'center'>Nasprotnik2</h4>
         <p align = 'center'> 
        
@@ -42,6 +54,14 @@
   
 
 </td>
+    <td>
+        <p>Ali želiš zdaj poklicati to karto, ki si jo vlekel <b>{{igra.igralci[0][-1]}}</b>? </p>
+% to = "/poglej3"
+        <form action="{{to}}" method="post">
+            <button type="submit" name= "ali" value= 'da'>Da</button>
+            <button type="submit" name= "ali" value= 'ne'>Ne</button>
+          </form>
+    </td>
 </tr>
 <tr>
 <td >
@@ -60,12 +80,12 @@
     <p align='center'> 
 % zgorna = igra.zgorne_karte[-1]
 % zgorna_karta = '/static/' + str(zgorna) + '.jpg'
-            <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
+            <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="150"/>
             
 </p></td><td>
             <figure>
                     <figcaption>Kupček</figcaption> 
-                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
+                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="150" />
                     
                     </figure>
 
@@ -85,7 +105,7 @@
 </p> </td> 
 </tr>
 <tr>
-<td colspan="3" id="spodnja">
+<td colspan="4" id="spodnja">
     <h4 align='center'>Tvoje karte</h4>
     <p align= 'center'>
 
@@ -101,14 +121,7 @@
 
     </p>
 </td>
-#
-    <td>
-        <p>Ali želiš zdaj poklicati to karto, ki si jo vlekel <b>{{igra.igralci[0][-1]}}</b>? </p>
-% to = "/poglej3/" + id_igre
-        <form action="{{to}}" method="post">
-            <button type="submit" name= "ali" value= 'da'>Da</button>
-            <button type="submit" name= "ali" value= 'ne'>Ne</button>
-          </form>
-    </td>
+
+
 </tr>
 </table>

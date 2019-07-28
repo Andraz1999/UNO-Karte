@@ -20,20 +20,28 @@
 % ime1 = '/static/' + 'nasprotnik' + na1 + '.jpg'
 % ime2 = '/static/' + 'nasprotnik' + na2 + '.jpg'
 % ime3 = '/static/' + 'nasprotnik' + na3 + '.jpg'
-% obdelava = '/obdelava/' + id_igre
+% obdelava = '/obdelava'
 
 <h2 align='center'> Na vrsti je {{trenutni}}. </h2>
 
-1:{{igra.igralci[1]}}
-2:{{igra.igralci[2]}}
-3:{{igra.igralci[3]}}
-{{igra.zgorne_karte}}
 
 <table align= 'center' border="0" cellspacing="0" cellpadding="8" width="1000px">
  
 
 <tr>
-    <td colspan="4">
+    <td>
+% if igra.smer == 1:
+% smer = '/static/smer1.png'
+% drgac = 'smer urnega kazalca'
+%else:
+%smer = '/static/smer0.png'
+% drgac = 'nasprotna smer urnega kazalca'
+%end
+        <img src= '{{smer}}' arc= '{{drgac}}' height="150" />
+
+
+    </td>
+    <td colspan="2">
         <h4 align = 'center'>Nasprotnik2</h4>
         <p align = 'center'> 
        
@@ -63,17 +71,22 @@
     <p align='left'> 
                 % zgorna = igra.zgorne_karte[-1]
                 % zgorna_karta = '/static/' + str(zgorna) + '.jpg'
-                            <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
-            
+                            <p><figure>
+                                <figcaption align= "center">Zgorna karta</figcaption> 
+                                <img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="150"/>
+                            </figure>
 </p></td><td>
+
+        
             <figure>
-                        <figcaption>Kupček</figcaption> 
-                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
+                        <figcaption align= "center">Kupček</figcaption> 
+                        <form align= "center" action="{{obdelava}}" method="post">
+                                <input type="hidden" name="poteza" value="0">
+                                <input type="image" src= '/static/nasprotnik1.jpg',  alt = "Kupček", height="150"/>
+                                 </form>
                     
                     </figure>
-                    <form align= "center" action="{{obdelava}}" method="post">
-                                <button type="submit" name='poteza' value="0"> Vleci </button>
-                             </form>
+                    
 
             
             </p>
@@ -92,20 +105,22 @@
 <tr>
 <td colspan="4" id="spodnja">
     <h4 align='center'>Tvoje karte</h4>
-    <p align= 'center'>
 
-            % for i in range(len(igra.igralci[0])):
-                    % slika = '/static/' +  str(igra.igralci[0][i]) + '.jpg'
-                    % karta = str(igra.igralci[0][i])
+    <form align="center" action="{{obdelava}}" method="POST">
+        % for i in range(len(igra.igralci[0])):
+        % slika = '/static/' +  str(igra.igralci[0][i]) + '.jpg'
+        % karta = str(igra.igralci[0][i])
+        % vrednost = i + 1
+        
+        
+        <button type="submit" name="poteza" value="{{vrednost}}"><img src= "{{ slika }}",  alt = "{{ karta }}", height="150"/></button>
+        
     
-                    <img src= "{{ slika }}",  alt = "{{ karta }}", height="150"/>
-            % end
-            <form align= 'center' action="{{obdelava}}" method="post">
-                    % for i in range(len(igra.igralci[0])):
-                   
-                    <button type="submit" name='poteza' value={{str(i + 1)}}> {{igra.igralci[0][i]}} </button>
-                    % end
-                 </form>
+        % end
+    </form>
+
+
+            
        
         
 

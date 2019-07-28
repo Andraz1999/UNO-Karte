@@ -20,7 +20,7 @@
 % ime1 = '/static/' + 'nasprotnik' + na1 + '.jpg'
 % ime2 = '/static/' + 'nasprotnik' + na2 + '.jpg'
 % ime3 = '/static/' + 'nasprotnik' + na3 + '.jpg'
-% obdelava = '/obdelava/' + id_igre
+% obdelava = '/obdelava'
 
 <h2 align='center'> Na vrsti je {{trenutni}}. </h2>
 
@@ -30,7 +30,19 @@
  
 
 <tr>
-    <td colspan="4">
+<td>
+% if igra.smer == 1:
+% smer = '/static/smer1.png'
+% drgac = 'smer urnega kazalca'
+%else:
+%smer = '/static/smer0.png'
+% drgac = 'nasprotna smer urnega kazalca'
+%end
+        <img src= '{{smer}}' arc= '{{drgac}}' height="150" />
+
+
+    </td>
+    <td colspan="2">
         <h4 align = 'center'>Nasprotnik2</h4>
         <p align = 'center'> 
        
@@ -42,6 +54,34 @@
   
 
 </td>
+
+<td>
+% if igra.zgorne_karte[-1][0] == Model.STOP:
+% if igra.naslednji_bi() == 0:
+ <p>Preskočili so te...</p>
+    % potrebno = '/stop'
+        <form action="{{potrebno}}", method='POST'>
+        <button type="submit">V redu</button>
+      </form></td>
+
+      %else:
+      % y = str(igra.naslednji_bi())
+      <td> <p>Preskočili ste Nasprotnika{{y}}.</p>
+    % potrebno = '/stop'
+        <form action="{{potrebno}}", method='POST'>
+        <button type="submit">V redu</button>
+      </form></td>
+      
+      %end
+% elif igra.zgorne_karte[-1][0] == Model.ZAMENJAJ_STRAN:
+
+<td> <p>Smer se je spremenila.</p>
+    % potrebno = '/spremembasmeri'
+        <form action="{{potrebno}}", method='POST'>
+        <button type="submit">V redu</button>
+      </form>
+      %end
+      </td>
 </tr>
 <tr>
 <td >
@@ -60,12 +100,12 @@
     <p align='center'> 
             % zgorna = igra.zgorne_karte[-1]
             % zgorna_karta = '/static/' + str(zgorna) + '.jpg'
-                        <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="120"/>
+                        <p><img align= 'center' src= '{{ zgorna_karta}}' alt= "{{ zgorna }}" height="150"/>
                     </p></td><td>           
 
             <figure>
                     <figcaption>Kupček</figcaption> 
-                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="120" />
+                    <img src='/static/nasprotnik1.jpg' alt="Kupček" height="150" />
                     
                     </figure>
 
@@ -85,7 +125,7 @@
 </p> </td> 
 </tr>
 <tr>
-<td colspan="3" id="spodnja">
+<td colspan="4" id="spodnja">
     <h4 align='center'>Tvoje karte</h4>
     <p align= 'center'>
 
@@ -102,31 +142,7 @@
     </p>
 </td>
 
-% if igra.zgorne_karte[-1][0] == Model.STOP:
-% if igra.trenutni_igralec == 0:
-<td> <p>Preskočili so te...</p>
-    % potrebno = '/vmesnan/' + id_igre 
-        <form action="{{potrebno}}", method='GET'>
-        <button type="submit">V redu</button>
-      </form></td>
 
-      %else:
-      % y = str(igra.trenutni_igralec)
-      <td> <p>Preskočili ste Nasprotnika{{y}}.</p>
-    % potrebno = '/vmesnan/' + id_igre 
-        <form action="{{potrebno}}", method='GET'>
-        <button type="submit">V redu</button>
-      </form></td>
       
-      %end
-% elif igra.zgorne_karte[-1][0] == Model.ZAMENJAJ_STRAN:
-
-<td> <p>Smer se je spremenila.</p>
-    % potrebno = '/igra/' + id_igre
-        <form action="{{potrebno}}", method='GET'>
-        <button type="submit">V redu</button>
-      </form>
-      </td>
-      %end
 </tr>
 </table>

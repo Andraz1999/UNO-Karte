@@ -1,17 +1,24 @@
 %  rebase('base.tpl')
 
+<figure>
 
-  <h1>Dobrodošli v UNO kartah!</h1>
+  <figcaption><h1 align="center" >Dobrodošli v UNO kartah!</h1></figcaption>
 
-  <img src= '/static/uno-karte.jpg'/>
+  <img align="center" src= '/static/uno-karte.jpg'/>
+</figure>
 
 
-  <!--<img src="img/10.jpg" alt="obesanje">-->
+  
 
-  <form action="/nova_igra/" method="post">
+  <form align="center" action="/nova_igra/" method="post">
     <button type="submit">Igraj</button>
   </form>
 
-  <form action="/pravila_igre/", method='GET'>
+  <form align="center" action="/pravila_igre/", method='GET'>
     <button type="submit">Pravila igre</button>
   </form>
+
+ 
+
+
+ 
