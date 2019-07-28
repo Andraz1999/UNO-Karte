@@ -6,7 +6,7 @@ Tekstovni vmesnik pa se požene v **tekstovni_vmesnik.py**.
 
 
 
-##Pravila igre za mojo različico
+##Pravila igre za mojo različico##
     
          
 V tej igri so uporabljene čisto navadne karte, ki se uporabljajo v             
@@ -34,15 +34,15 @@ katerokoli barvo. Črne karte so samo "sprememba barve", "+2", "+4" in "+5".
  
 **LEGENDA:**
             
-+rd = RDECA
-+ru = RUMENA
-+mo = MODRA
-+ze = ZELENA   
-+cr = CRNA   
-+⟳ = ZAMENJAJ STRAN   
-+STOP = st   
-+sp = SPREMENI BARVO 
-++2 = VLECI DVE   
-++4 = VLECI STIRI   
-++5 = VLECI PET   
-+X = IZPADEL
+1. rd = RDECA
+2. ru = RUMENA
+3. mo = MODRA
+4. ze = ZELENA   
+5. cr = CRNA   
+6. ⟳ = ZAMENJAJ STRAN   
+7. STOP = st   
+8. sp = SPREMENI BARVO 
+9. +2 = VLECI DVE   
+10. +4 = VLECI STIRI   
+11. +5 = VLECI PET   
+12. X = IZPADEL
