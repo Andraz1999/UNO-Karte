@@ -55,10 +55,11 @@
 
 </td>
 
-<td>
+
 % if igra.zgorne_karte[-1][0] == Model.STOP:
 % if igra.naslednji_bi() == 0:
- <p>Preskočili so te...</p>
+ <td>
+    <p>Preskočili so te...</p>
     % potrebno = '/stop'
         <form action="{{potrebno}}", method='POST'>
         <button type="submit">V redu</button>
@@ -79,9 +80,9 @@
     % potrebno = '/spremembasmeri'
         <form action="{{potrebno}}", method='POST'>
         <button type="submit">V redu</button>
-      </form>
+      </form></td>
       %end
-      </td>
+      
 </tr>
 <tr>
 <td >

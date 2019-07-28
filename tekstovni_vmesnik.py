@@ -294,7 +294,6 @@ def prikaz_igralca14(stevilo0, barva0, stevilo1, barva1, stevilo2, barva2, stevi
      )
     print(prikaz1.format(aa = stevilo0, bb = barva0, cc = stevilo1, dd = barva1, ee = stevilo2, ff = barva2, gg = stevilo3, hh = barva3, ii = stevilo4, jj = barva4, kk = stevilo5, ll = barva5, mm = stevilo6, nn = barva6, oo = stevilo7, pp = barva7, rr = stevilo8, ss = barva8, tt = stevilo9, uu = barva9, vv = stevilo10, zz = barva10, ab = stevilo11, ba = barva11, bc = stevilo12, cb = barva12, cd = stevilo13, dc = barva13)) 
 
-# prikaz_igralca14('01', 'aa', '02', 'bb', '03', 'cc', '04', 'dd', '05', 'ee', '06', 'ff', '07', 'gg', '08', 'hh', '09', 'ii', '10', 'jj', '11', 'kk', '12', 'll', '13', 'mm', '14', 'nn')
 
 def prikaz_igralca15(stevilo0, barva0, stevilo1, barva1, stevilo2, barva2, stevilo3, barva3, stevilo4, barva4, stevilo5, barva5, stevilo6, barva6, stevilo7, barva7, stevilo8, barva8, stevilo9, barva9, stevilo10, barva10, stevilo11, barva11, stevilo12, barva12, stevilo13, barva13, stevilo14, barva14):
     prikaz1 = (
@@ -366,7 +365,6 @@ def prikaz_igralca19(stevilo0, barva0, stevilo1, barva1, stevilo2, barva2, stevi
      )
     print(prikaz1.format(aa = stevilo0, bb = barva0, cc = stevilo1, dd = barva1, ee = stevilo2, ff = barva2, gg = stevilo3, hh = barva3, ii = stevilo4, jj = barva4, kk = stevilo5, ll = barva5, mm = stevilo6, nn = barva6, oo = stevilo7, pp = barva7, rr = stevilo8, ss = barva8, tt = stevilo9, uu = barva9, vv = stevilo10, zz = barva10, ab = stevilo11, ba = barva11, bc = stevilo12, cb = barva12, cd = stevilo13, dc = barva13, de = stevilo14, ed = barva14, ef = stevilo15, fe = barva15, fg = stevilo16, gf = barva16, gh = stevilo17, hg = barva17, hi = stevilo18, ih = barva18)) 
 
-# prikaz_igralca19('01', 'aa', '02', 'bb', '03', 'cc', '04', 'dd', '05', 'ee', '06', 'ff', '07', 'gg', '08', 'hh', '09', 'ii', '10', 'jj', '11', 'kk', '12', 'll', '13', 'mm', '14', 'nn', '15', 'oo', '16', 'pp', '17', 'rr', '18', 'ss', '19', 'tt')
 
 def prikaz_igralca20(stevilo0, barva0, stevilo1, barva1, stevilo2, barva2, stevilo3, barva3, stevilo4, barva4, stevilo5, barva5, stevilo6, barva6, stevilo7, barva7, stevilo8, barva8, stevilo9, barva9, stevilo10, barva10, stevilo11, barva11, stevilo12, barva12, stevilo13, barva13, stevilo14, barva14, stevilo15, barva15, stevilo16, barva16, stevilo17, barva17, stevilo18, barva18, stevilo19, barva19):
     prikaz1 = (
@@ -678,7 +676,6 @@ def main():
     
     while True:
         osnova()
-        #zgorna_karta = igra.zgorne_karte[-1]
         if igra.trenutni_igralec == 0:
             vnos = poteza()
             krog_igralec(vnos, True)

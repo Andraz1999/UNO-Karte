@@ -23,7 +23,6 @@ def prikazi_sliko(ime_slike):
 
 @bottle.post('/nova_igra/')
 def zacni_novo_igro():
-    # naredi novo igro in preusmeri na nov naslov
     id_igre = uno.nova_igra()
     bottle.response.set_cookie('id_igre', id_igre, secret=SKRIVNI_KLJUC, path='/')
     bottle.redirect('/igra')
@@ -123,15 +122,28 @@ def kaj_zdaj(vnos, kljuc):
     elif kaj == 7:
         return bottle.template('igra7.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
     elif kaj == 8:
-        return bottle.template('igra8.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+        bottle.redirect('/igra/posredujem8')
     elif kaj == 6:
         if igra.trenutni_igralec == 0:
-            return bottle.template('igra60.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+            bottle.redirect('/igra/posredujem')
         else:
             bottle.redirect('/kolikobovlekel')
     else:
         bottle.redirect('/shrani1')
-        
+
+@bottle.get('/igra/posredujem8')
+def posredujem():
+    id_igre = bottle.request.get_cookie('id_igre', secret=SKRIVNI_KLJUC)
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    return bottle.template('igra8.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+
+
+@bottle.get('/igra/posredujem')
+def posredujem():
+    id_igre = bottle.request.get_cookie('id_igre', secret=SKRIVNI_KLJUC)
+    (igra, stanje, kaj, kazen) = uno.igre[int(id_igre)]
+    return bottle.template('igra60.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+
 
 @bottle.get('/kolikobovlekel')
 def nasprotnik():
@@ -265,10 +277,10 @@ def kaj_zdajn(vnos, kljuc):
     elif kaj == 7:
         return bottle.template('igra7.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
     elif kaj == 8:
-        return bottle.template('igra8.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+        bottle.redirect('/igra/posredujem8')
     elif kaj == 6:
         if igra.trenutni_igralec == 0:
-            return bottle.template('igra60.tpl', id_igre= id_igre, igra= igra, stanje= stanje, kaj= kaj, kazen= kazen)
+            bottle.redirect('/igra/posredujem')
         else:
             bottle.redirect('/kolikobovlekel')
     else:
