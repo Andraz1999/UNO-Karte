@@ -28,23 +28,21 @@ katerokoli barvo. Črne karte so samo "sprememba barve", "+2", "+4" in "+5".
       
                                                                              
         
-Ko ste vi na vrsti, kliknite na karto, ki jo želite poklicati, ali pa na kupček, 
-če bi raje vlekli novo karto.
-Za vse ostalo, pa se v DESNEM ZGORNEM kotu pokaže gumb.
+
         
         
  
 **LEGENDA:**
             
-rd = RDECA
-ru = RUMENA
-mo = MODRA
-ze = ZELENA   
-cr = CRNA   
-⟳ = ZAMENJAJ STRAN   
-STOP = st   
-sp = SPREMENI BARVO 
-+2 = VLECI DVE   
-+4 = VLECI STIRI   
-+5 = VLECI PET   
-X = IZPADEL
++rd = RDECA
++ru = RUMENA
++mo = MODRA
++ze = ZELENA   
++cr = CRNA   
++⟳ = ZAMENJAJ STRAN   
++STOP = st   
++sp = SPREMENI BARVO 
+++2 = VLECI DVE   
+++4 = VLECI STIRI   
+++5 = VLECI PET   
++X = IZPADEL
