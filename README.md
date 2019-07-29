@@ -10,7 +10,7 @@ Tekstovni vmesnik pa se požene v **tekstovni_vmesnik.py**.
     
          
 V tej igri so uporabljene čisto navadne karte, ki se uporabljajo v             
-običajnih UNO kartah. Zato tudi ne bom razložil, kaj naredijo karte z          
+običajnih UNO kartah. Zato tudi ne bom razložil, kaj naredijo karte s          
 številkami, spremeni smer, spremeni barvo in stop.                             
 Razložim pa lahko naslednje:                                                   
 Karta +2 pomeni, da naslednji igralec vleče dve karti, razen, če ima tudi      
@@ -27,7 +27,13 @@ zelena, imamo še črno, ki samo pomeni, da lahko to karto pokličeš na
 katerokoli barvo. Črne karte so samo "sprememba barve", "+2", "+4" in "+5".
       
                                                                              
-        
+Edina stvar je še to, da ima lahko igralec največ 20 kart.                     
+Torej bodo tisti, ki preizkušajo mejo, koliko kart lahko v rokah držijo,       
+izpadli in to se označi s črko "X".                                            
+                                                                               
+Igre je takoj konec, če imaš v roki več kot 20 kart, ali pa kdo zmaga.         
+                                                                               
+Želim vam veliko zabave pri igranju teh UNO kart.       
 
         
         

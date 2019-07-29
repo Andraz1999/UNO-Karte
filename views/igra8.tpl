@@ -48,7 +48,7 @@
        
         
         
-                <img src= {{ime2}} alt = {{na1}} height="150"/></p>
+                <img src= {{ime2}} alt = {{na2}} height="150"/></p>
             
     </p>
   
@@ -111,7 +111,7 @@
        
         
         
-        <img src= {{ime3}} alt = {{na1}} height="150"/></p>
+        <img src= {{ime3}} alt = {{na3}} height="150"/></p>
     
 </p> </td> 
 </tr>

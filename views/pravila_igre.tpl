@@ -5,7 +5,7 @@
     
         <p> 
             V tej igri so uporabljene čisto navadne karte, ki se uporabljajo v             
-            običajnih UNO kartah. Zato tudi ne bom razložil, kaj naredijo karte z          
+            običajnih UNO kartah. Zato tudi ne bom razložil, kaj naredijo karte s          
             številkami, spremeni smer, spremeni barvo in stop.                             
             Razložim pa lahko naslednje:                                                   
             Karta +2 pomeni, da naslednji igralec vleče dve karti, razen, če ima tudi      
@@ -29,6 +29,17 @@
             Za vse ostalo, pa se v DESNEM ZGORNEM kotu pokaže gumb.
         </p>
 
+        <p> 
+            Edina stvar je še to, da ima lahko igralec največ 20 kart.                     
+            Torej bodo tisti, ki preizkušajo mejo, koliko kart lahko v rokah držijo,       
+            izpadli in to se označi s črko "X".                                            
+        </p>                                                                        
+            Igre je takoj konec, če imaš v roki več kot 20 kart, ali pa kdo zmaga.         
+        <p> 
+            Želim vam veliko zabave pri igranju teh UNO kart. 
+        </p> 
+
+
         <p>
             
             <h6>LEGENDA:</h6>
@@ -39,7 +50,7 @@
                 <li>ze = ZELENA</li>   
                 <li>cr = CRNA</li>   
                 <li>⟳ = ZAMENJAJ STRAN</li>   
-                <li>STOP = st</li>   
+                <li>st = STOP</li>   
                 <li>sp = SPREMENI BARVO</li> 
                 <li>+2 = VLECI DVE</li>   
                 <li>+4 = VLECI STIRI</li>   
