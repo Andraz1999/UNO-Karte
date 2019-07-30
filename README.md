@@ -46,7 +46,7 @@ Igre je takoj konec, če imaš v roki več kot 20 kart, ali pa kdo zmaga.
 4. ze = ZELENA   
 5. cr = CRNA   
 6. ⟳ = ZAMENJAJ STRAN   
-7. STOP = st   
+7. st = STOP   
 8. sp = SPREMENI BARVO 
 9. +2 = VLECI DVE   
 10. +4 = VLECI STIRI   
